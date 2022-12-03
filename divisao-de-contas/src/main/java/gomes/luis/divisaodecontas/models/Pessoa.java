@@ -1,17 +1,22 @@
 package gomes.luis.divisaodecontas.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Pessoa {
+@Table(name = "pessoa")
+public class Pessoa implements Serializable {
     @Id
     @GeneratedValue()
     private Long id;
     @Column(nullable = false)
     private String nome;
+    public Pessoa() {
+    }
+
+    public Pessoa(String nome) {
+        this.nome = nome;
+    }
 
     public Long getId() {
         return id;
