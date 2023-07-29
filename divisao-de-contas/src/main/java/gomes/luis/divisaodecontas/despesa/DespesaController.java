@@ -1,7 +1,5 @@
-package gomes.luis.divisaodecontas.controllers;
+package gomes.luis.divisaodecontas.despesa;
 
-import gomes.luis.divisaodecontas.models.Despesa;
-import gomes.luis.divisaodecontas.services.DespesaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +31,7 @@ public class DespesaController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity salvarDespesa(@RequestBody Despesa despesa){
-        despesaService.salvar(despesa);
+        despesaService.salvarDespesa(despesa);
         return new ResponseEntity<>(DESPESA_CRIADA,HttpStatus.CREATED);
     }
 

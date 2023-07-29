@@ -1,14 +1,13 @@
-package gomes.luis.divisaodecontas.controllers;
+package gomes.luis.divisaodecontas.pessoa;
 
-import gomes.luis.divisaodecontas.models.Pessoa;
-import gomes.luis.divisaodecontas.repositories.PessoaRepository;
-import gomes.luis.divisaodecontas.services.PessoaService;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
+import gomes.luis.divisaodecontas.pessoa.PessoaService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 

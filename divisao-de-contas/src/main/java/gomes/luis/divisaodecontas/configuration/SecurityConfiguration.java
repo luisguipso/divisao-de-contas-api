@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-public class SecuriryConfiguration {
+public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

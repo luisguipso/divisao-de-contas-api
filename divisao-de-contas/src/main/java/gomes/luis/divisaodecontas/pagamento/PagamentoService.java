@@ -1,9 +1,8 @@
-package gomes.luis.divisaodecontas.services;
+package gomes.luis.divisaodecontas.pagamento;
 
-import gomes.luis.divisaodecontas.models.Despesa;
-import gomes.luis.divisaodecontas.models.Pagamento;
-import gomes.luis.divisaodecontas.models.Pessoa;
-import gomes.luis.divisaodecontas.repositories.PagamentoRepository;
+import gomes.luis.divisaodecontas.despesa.Despesa;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
+import gomes.luis.divisaodecontas.service.GenericService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,12 +11,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class PagamentoService extends GenericService<Pagamento, Long> {
-    private PagamentoRepository pagamentoRepository;
 
+    private PagamentoRepository pagamentoRepository;
 
     public PagamentoService(PagamentoRepository repository) {
         super(repository);
-        pagamentoRepository = repository;
+        this.pagamentoRepository = repository;
     }
 
     public List<Pagamento> buscarPagamentosPorDespesa(Despesa despesa) {

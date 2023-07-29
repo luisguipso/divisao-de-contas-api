@@ -1,7 +1,6 @@
-package gomes.luis.divisaodecontas.services;
+package gomes.luis.divisaodecontas.categoria;
 
-import gomes.luis.divisaodecontas.models.Categoria;
-import gomes.luis.divisaodecontas.repositories.CategoriaRepository;
+import gomes.luis.divisaodecontas.service.GenericService;
 import org.springframework.stereotype.Service;
 
 @Service

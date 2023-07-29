@@ -1,8 +1,9 @@
-package gomes.luis.divisaodecontas.models;
+package gomes.luis.divisaodecontas.periodo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,0 +1,26 @@
+api:
+  title: Divisao de contas
+  description: Api de divisao de contas
+  version: v0.0.1
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework: DEBUG
+
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/divisaodecontas?useSSL=false
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        generate-ddl: true
+        format_sql: true
+    show-sql: true

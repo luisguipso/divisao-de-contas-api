@@ -20,39 +20,44 @@ public class ErroPersonalizado implements Serializable {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public ErroPersonalizado setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
+        return this;
     }
 
     public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public ErroPersonalizado setStatus(Integer status) {
         this.status = status;
+        return this;
     }
 
     public String getError() {
         return error;
     }
 
-    public void setError(String error) {
+    public ErroPersonalizado setError(String error) {
         this.error = error;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public ErroPersonalizado setMessage(String message) {
         this.message = message;
+        return this;
     }
 
     public String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
+    public ErroPersonalizado setPath(String path) {
         this.path = path;
+        return this;
     }
 }

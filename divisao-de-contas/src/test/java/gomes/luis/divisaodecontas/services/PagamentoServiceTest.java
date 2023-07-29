@@ -1,8 +1,9 @@
 package gomes.luis.divisaodecontas.services;
 
-import gomes.luis.divisaodecontas.models.Despesa;
-import gomes.luis.divisaodecontas.models.Pagamento;
-import gomes.luis.divisaodecontas.models.Pessoa;
+import gomes.luis.divisaodecontas.despesa.Despesa;
+import gomes.luis.divisaodecontas.pagamento.Pagamento;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
+import gomes.luis.divisaodecontas.pagamento.PagamentoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +21,8 @@ import static org.mockito.Mockito.*;
 public class PagamentoServiceTest {
     @InjectMocks
     PagamentoService pagamentoService;
-    Despesa despesa;
     PagamentoService spiedPagamentoService;
+    Despesa despesa;
 
     @BeforeEach
     public void setUp(){

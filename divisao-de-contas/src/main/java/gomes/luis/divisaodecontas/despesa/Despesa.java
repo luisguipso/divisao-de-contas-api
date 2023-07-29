@@ -1,6 +1,11 @@
-package gomes.luis.divisaodecontas.models;
+package gomes.luis.divisaodecontas.despesa;
 
-import javax.persistence.*;
+
+import gomes.luis.divisaodecontas.categoria.Categoria;
+import gomes.luis.divisaodecontas.periodo.Periodo;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -44,7 +49,6 @@ public class Despesa implements Serializable {
     public Despesa() {
     }
 
-
     public Despesa(String descricao, Pessoa dono, boolean isDivisivel, Categoria categoria, Date data, Periodo periodo, BigDecimal valor, boolean isPago) {
         this();
         this.descricao = descricao;
@@ -86,7 +90,7 @@ public class Despesa implements Serializable {
     }
 
     public List<Pessoa> getPagadores(){
-        return pagadores != null ? pagadores : new ArrayList<>();
+        return !pagadores.isEmpty() ? pagadores : List.of(getDono());
     }
 
     public void adicionarPagador(Pessoa pagador){

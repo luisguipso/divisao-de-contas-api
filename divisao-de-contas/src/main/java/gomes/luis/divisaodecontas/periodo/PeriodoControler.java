@@ -1,7 +1,5 @@
-package gomes.luis.divisaodecontas.controllers;
+package gomes.luis.divisaodecontas.periodo;
 
-import gomes.luis.divisaodecontas.models.Periodo;
-import gomes.luis.divisaodecontas.services.PeriodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,11 +42,6 @@ public class PeriodoControler {
         return new ResponseEntity(PERIODO_ATUALIZADO,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/fechar/{id}", method = RequestMethod.POST)
-    public ResponseEntity fecharPeriodo(@PathVariable Long id){
-        Periodo p = periodoService.fecharPeriodo(id);
-        return new ResponseEntity<Periodo>(p,HttpStatus.OK);
-    }
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity excluirPeriodo(@PathVariable Long id){
         periodoService.excluirPorId(id);

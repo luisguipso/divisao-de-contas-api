@@ -2,8 +2,9 @@ package gomes.luis.divisaodecontas.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gomes.luis.divisaodecontas.DivisaoDeContasApplicationTests;
-import gomes.luis.divisaodecontas.models.Pessoa;
-import gomes.luis.divisaodecontas.repositories.PessoaRepository;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
+import gomes.luis.divisaodecontas.pessoa.PessoaController;
+import gomes.luis.divisaodecontas.pessoa.PessoaRepository;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;

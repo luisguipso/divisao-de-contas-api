@@ -1,7 +1,9 @@
 package gomes.luis.divisaodecontas.controllers;
 
-import gomes.luis.divisaodecontas.models.Categoria;
-import gomes.luis.divisaodecontas.services.CategoriaService;
+import gomes.luis.divisaodecontas.categoria.Categoria;
+import gomes.luis.divisaodecontas.categoria.CategoriaController;
+import gomes.luis.divisaodecontas.categoria.CategoriaService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +11,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = CategoriaController.class)
 public class CategoriaControllerTest {

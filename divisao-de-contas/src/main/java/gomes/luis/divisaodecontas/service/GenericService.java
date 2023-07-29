@@ -1,14 +1,15 @@
-package gomes.luis.divisaodecontas.services;
+package gomes.luis.divisaodecontas.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 public class GenericService<T,K extends Serializable> {
-    JpaRepository<T,K> repository;
+
+    private final JpaRepository<T,K> repository;
 
     public GenericService(final JpaRepository<T,K> repository){
         this.repository = repository;

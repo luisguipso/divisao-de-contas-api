@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DivisaoDeContasApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:application.properties")
+@TestPropertySource(locations = "classpath:#application.properties")
 public class DivisaoDeContasApplicationTests {
 
 	@Test

@@ -1,6 +1,9 @@
-package gomes.luis.divisaodecontas.models;
+package gomes.luis.divisaodecontas.pagamento;
 
-import javax.persistence.*;
+import gomes.luis.divisaodecontas.despesa.Despesa;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;

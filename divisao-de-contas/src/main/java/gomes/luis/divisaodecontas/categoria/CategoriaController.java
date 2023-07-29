@@ -1,8 +1,7 @@
-package gomes.luis.divisaodecontas.controllers;
+package gomes.luis.divisaodecontas.categoria;
 
-import gomes.luis.divisaodecontas.models.Categoria;
-import gomes.luis.divisaodecontas.repositories.CategoriaRepository;
-import gomes.luis.divisaodecontas.services.CategoriaService;
+import gomes.luis.divisaodecontas.categoria.Categoria;
+import gomes.luis.divisaodecontas.categoria.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

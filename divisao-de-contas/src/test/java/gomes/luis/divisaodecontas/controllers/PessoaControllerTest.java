@@ -1,7 +1,8 @@
 package gomes.luis.divisaodecontas.controllers;
 
-import gomes.luis.divisaodecontas.models.Pessoa;
-import gomes.luis.divisaodecontas.services.PessoaService;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
+import gomes.luis.divisaodecontas.pessoa.PessoaController;
+import gomes.luis.divisaodecontas.pessoa.PessoaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

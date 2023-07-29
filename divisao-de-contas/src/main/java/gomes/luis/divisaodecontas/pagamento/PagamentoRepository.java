@@ -1,7 +1,7 @@
-package gomes.luis.divisaodecontas.repositories;
+package gomes.luis.divisaodecontas.pagamento;
 
-import gomes.luis.divisaodecontas.models.Despesa;
-import gomes.luis.divisaodecontas.models.Pagamento;
+import gomes.luis.divisaodecontas.despesa.Despesa;
+import gomes.luis.divisaodecontas.pagamento.Pagamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

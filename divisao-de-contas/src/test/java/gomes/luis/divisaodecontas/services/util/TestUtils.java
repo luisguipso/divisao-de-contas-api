@@ -1,9 +1,9 @@
 package gomes.luis.divisaodecontas.services.util;
 
-import gomes.luis.divisaodecontas.models.Categoria;
-import gomes.luis.divisaodecontas.models.Despesa;
-import gomes.luis.divisaodecontas.models.Periodo;
-import gomes.luis.divisaodecontas.models.Pessoa;
+import gomes.luis.divisaodecontas.categoria.Categoria;
+import gomes.luis.divisaodecontas.despesa.Despesa;
+import gomes.luis.divisaodecontas.periodo.Periodo;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
 
 import java.math.BigDecimal;
 import java.util.Date;
