@@ -13,11 +13,16 @@ public class Pessoa implements Serializable {
     private Long id;
     @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false)
+    private int percentual;
+
     public Pessoa() {
     }
 
-    public Pessoa(String nome) {
+    public Pessoa(String nome, int percentual) {
         this.nome = nome;
+        this.percentual = percentual;
     }
 
     public Long getId() {
@@ -34,5 +39,13 @@ public class Pessoa implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getPercentual() {
+        return percentual;
+    }
+
+    public void setPercentual(int percentual) {
+        this.percentual = percentual;
     }
 }
