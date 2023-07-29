@@ -25,10 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = PeriodoControler.class)
-public class PeriodoControllerTest {
+class PeriodoControllerTest {
 
-    public static final LocalDate DATA_5_5_2022 = LocalDate.of(2022, 5, 5);
-    public static final LocalDate DATA_1_5_2022 = LocalDate.of(2022, 5, 1);
+    static final LocalDate DATA_5_5_2022 = LocalDate.of(2022, 5, 5);
+    static final LocalDate DATA_1_5_2022 = LocalDate.of(2022, 5, 1);
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -44,7 +44,7 @@ public class PeriodoControllerTest {
     }
 
     private void criarPeriodos() {
-        maio = new Periodo(DATA_5_5_2022, DATA_1_5_2022);
+        maio = new Periodo();
         maio.setId(1L);
     }
 
@@ -55,7 +55,7 @@ public class PeriodoControllerTest {
     }
 
     @Test
-    public void buscarTodosOsPeriodosHappyDay_DeveRetornarSucesso() throws Exception {
+    void buscarTodosOsPeriodosHappyDay_DeveRetornarSucesso() throws Exception {
         when(periodoService.buscarTodosOsPeriodos())
                 .thenReturn(List.of(maio));
 
@@ -64,7 +64,7 @@ public class PeriodoControllerTest {
     }
 
     @Test
-    public void buscarTodosOsPeriodosQuandoNaoExistem_DeveRetornarPeriodosNaoCadastrados() throws Exception {
+    void buscarTodosOsPeriodosQuandoNaoExistem_DeveRetornarPeriodosNaoCadastrados() throws Exception {
         when(periodoService.buscarTodosOsPeriodos())
                 .thenThrow(new EntityNotFoundException());
 
@@ -76,7 +76,7 @@ public class PeriodoControllerTest {
     }
 
     @Test
-    public void buscarPeriodoPorId_DeveRetornarOPeriodo() throws Exception {
+    void buscarPeriodoPorId_DeveRetornarOPeriodo() throws Exception {
         when(periodoService.buscarPorId(Long.valueOf(1)))
                 .thenReturn(Optional.ofNullable(maio));
 
@@ -89,7 +89,7 @@ public class PeriodoControllerTest {
     }
 
     @Test
-    public void buscarPeriodoInexistente_DeveRetornarPeriodoNaoCadastrado() throws Exception {
+    void buscarPeriodoInexistente_DeveRetornarPeriodoNaoCadastrado() throws Exception {
         when(periodoService.buscarPorId(1L))
                 .thenThrow(new EntityNotFoundException());
 
@@ -101,7 +101,7 @@ public class PeriodoControllerTest {
     }
 
     @Test
-    public void cadastrarPeriodoHappyDay_DeveRetornarIsCreated() throws Exception {
+    void cadastrarPeriodoHappyDay_DeveRetornarIsCreated() throws Exception {
         when(periodoService.salvar(maio)).thenReturn(maio);
 
         String jsonMaio = mapper.writeValueAsString(maio);
@@ -114,7 +114,7 @@ public class PeriodoControllerTest {
     }
 
     @Test
-    public void cadastrarPeriodoFaltandoCampos_DeveRetornarBadRequest() throws Exception {
+    void cadastrarPeriodoFaltandoCampos_DeveRetornarBadRequest() throws Exception {
         mockMvc.perform(post("/periodo")
                         .content("{something that isn't a periodo}")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -123,7 +123,7 @@ public class PeriodoControllerTest {
     }
 
     @Test
-    public void alterarPeriodoHappyDay_DeveRetornarOk() throws Exception {
+    void alterarPeriodoHappyDay_DeveRetornarOk() throws Exception {
         Periodo periodoMockado = mock(Periodo.class);
         when(periodoService.atualizar(anyLong(), any(Periodo.class)))
                 .thenReturn(periodoMockado);
@@ -152,7 +152,7 @@ public class PeriodoControllerTest {
     }
 
     @Test
-    public void apagarPeriodoHappyDay_DeveRetornarOk() throws Exception {
+    void apagarPeriodoHappyDay_DeveRetornarOk() throws Exception {
         doNothing().when(periodoService).excluirPorId(1L);
 
         mockMvc.perform(delete("/periodo/{id}", 1)

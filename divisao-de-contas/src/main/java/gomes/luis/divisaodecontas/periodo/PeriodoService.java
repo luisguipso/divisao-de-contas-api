@@ -1,23 +1,19 @@
 package gomes.luis.divisaodecontas.periodo;
 
 
-import gomes.luis.divisaodecontas.pagamento.PagamentoService;
 import gomes.luis.divisaodecontas.service.GenericService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 @Service
 @EnableTransactionManagement
 public class PeriodoService extends GenericService<Periodo, Long> {
-    private final PagamentoService pagamentoService;
 
-    public PeriodoService(PeriodoRepository repository, PagamentoService pagamentoService) {
+    public PeriodoService(PeriodoRepository repository) {
         super(repository);
-        this.pagamentoService = pagamentoService;
     }
 
     public List<Periodo> buscarTodosOsPeriodos() {
@@ -28,7 +24,6 @@ public class PeriodoService extends GenericService<Periodo, Long> {
 
     protected Periodo fecharPeriodo(Periodo periodo, BigDecimal valorTotal){
         periodo.setFechado(true);
-        periodo.setFim(new Date());
         periodo.setValorTotal(valorTotal);
         atualizar(periodo.getId(), periodo);
         return periodo;

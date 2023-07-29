@@ -1,7 +1,7 @@
 package gomes.luis.divisaodecontas.despesa;
 
 
-import gomes.luis.divisaodecontas.categoria.Categoria;
+
 import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.pessoa.Pessoa;
 import jakarta.persistence.*;
@@ -33,9 +33,7 @@ public class Despesa implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "id_pagador"))
     private List<Pessoa> pagadores = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "id_categoria")
-    private Categoria categoria;
+
     @Column(nullable = false)
     private Date data;
     @ManyToOne
@@ -49,12 +47,11 @@ public class Despesa implements Serializable {
     public Despesa() {
     }
 
-    public Despesa(String descricao, Pessoa dono, boolean isDivisivel, Categoria categoria, Date data, Periodo periodo, BigDecimal valor, boolean isPago) {
+    public Despesa(String descricao, Pessoa dono, boolean isDivisivel, Date data, Periodo periodo, BigDecimal valor, boolean isPago) {
         this();
         this.descricao = descricao;
         this.dono = dono;
         this.isDivisivel = isDivisivel;
-        this.categoria = categoria;
         this.data = data;
         this.periodo = periodo;
         this.valor = valor;
@@ -85,9 +82,6 @@ public class Despesa implements Serializable {
         this.dono = dono;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
-    }
 
     public List<Pessoa> getPagadores(){
         return !pagadores.isEmpty() ? pagadores : List.of(getDono());
@@ -103,10 +97,6 @@ public class Despesa implements Serializable {
         if(pagadores.contains(pagador)){
             pagadores.remove(pagador);
         }
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
     }
 
     public Date getData() {

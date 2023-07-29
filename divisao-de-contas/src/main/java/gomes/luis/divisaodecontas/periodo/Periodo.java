@@ -6,12 +6,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import static gomes.luis.divisaodecontas.util.DateConverter.localDateToDate;
 
 @Entity
 @Table(name = "periodo")
@@ -19,14 +15,9 @@ public class Periodo implements Serializable {
     @Id
     @GeneratedValue()
     private Long id;
-    @Column(nullable = false)
-    private Date mes;
-    @Column(nullable = false)
-    private Date inicio;
-    @Column(nullable = false)
-    private Date fim;
+
     @Column
-    private BigDecimal valorAtual;
+    private String descricao;
     @Column
     private boolean isFechado;
     @Column
@@ -38,19 +29,13 @@ public class Periodo implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "id_pagador"))
     private List<Pessoa> pagadores = new ArrayList<>();
 
-    public Periodo(LocalDate inicio, LocalDate mes) {
+    public Periodo(String descricao) {
         this();
-        setInicioLocalDate(inicio);
-        setMesLocalDate(mes);
+        this.descricao = descricao;
     }
 
     public Periodo(){
-        System.out.println("construtor sem argumentos");
         BigDecimal zero = new BigDecimal(0);
-        setMesLocalDate(LocalDate.now());
-        setInicioLocalDate(LocalDate.now());
-        setFimLocalDate(LocalDate.now());
-        this.valorAtual = zero;
         this.isFechado = false;
         this.valorTotal = zero;
     }
@@ -63,52 +48,12 @@ public class Periodo implements Serializable {
         this.id = id;
     }
 
-    public Date getMes() {
-        return mes;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setMesLocalDate(LocalDate mes){
-        System.out.println("Setando mes LocalDate");
-        Date d = localDateToDate(mes);
-        setMes(d);
-    }
-    public void setMes(Date mes) {
-        System.out.println("Setando mes Date");
-        this.mes = mes;
-    }
-
-
-    public Date getInicio() {
-        return inicio;
-    }
-
-    public void setInicioLocalDate(LocalDate inicio){
-        Date i = localDateToDate(inicio);
-        setInicio(i);
-    }
-    public void setInicio(Date inicio) {
-        this.inicio = inicio;
-    }
-
-
-    public Date getFim() {
-        return fim;
-    }
-
-    public void setFimLocalDate(LocalDate fim){
-        Date d = localDateToDate(fim);
-        setFim(d);
-    }
-    public void setFim(Date fim) {
-        this.fim = fim;
-    }
-
-    public BigDecimal getValorAtual() {
-        return valorAtual;
-    }
-
-    public void setValorAtual(BigDecimal valorAtual) {
-        this.valorAtual = valorAtual;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     @JsonProperty("isFechado")
@@ -117,7 +62,7 @@ public class Periodo implements Serializable {
     }
 
     public void setFechado(boolean isFechado) {
-        isFechado = isFechado;
+        this.isFechado = isFechado;
     }
 
     public BigDecimal getValorTotal() {

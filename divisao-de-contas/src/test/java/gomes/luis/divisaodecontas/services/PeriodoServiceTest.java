@@ -26,7 +26,7 @@ public class PeriodoServiceTest {
 
     @BeforeEach
     public void setUp() {
-        periodo = new Periodo(LocalDate.of(2022, 1, 5), LocalDate.of(2022, 1, 1));
+        periodo = new Periodo();
         spiedPeriodoService = spy(periodoService);
     }
 
