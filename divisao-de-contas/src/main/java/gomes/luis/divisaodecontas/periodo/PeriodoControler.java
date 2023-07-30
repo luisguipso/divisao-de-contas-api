@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/periodo")
+@RequestMapping("/v1/api/periodos")
 public class PeriodoControler {
 
     public static final String PERIODO_CRIADO = "Periodo criado.";
@@ -18,34 +18,33 @@ public class PeriodoControler {
     @Autowired
     PeriodoService periodoService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity buscarTodosOsPeriodos(){
+    @GetMapping
+    public ResponseEntity<List<Periodo>> buscarTodosOsPeriodos(){
         List<Periodo> periodos = periodoService.buscarTodosOsPeriodos();
-        return new ResponseEntity<List<Periodo>>(periodos, HttpStatus.OK);
+        return new ResponseEntity<>(periodos, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity buscarPeriodoPorId(@PathVariable(name = "id") Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<Periodo> buscarPeriodoPorId(@PathVariable(name = "id") Long id){
         Optional<Periodo> periodo = periodoService.buscarPorId(id);
-        return new ResponseEntity<Periodo>(periodo.get(), HttpStatus.OK);
+        return new ResponseEntity<>(periodo.orElse(null), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity salvarPeriodo(@RequestBody Periodo periodo){
+    @PostMapping()
+    public ResponseEntity<String> salvarPeriodo(@RequestBody Periodo periodo){
         periodoService.salvar(periodo);
         return new ResponseEntity<>(PERIODO_CRIADO,HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity atualizarPeriodo(@PathVariable Long id, @RequestBody Periodo periodo){
+    @PutMapping("/{id}")
+    public ResponseEntity<String> atualizarPeriodo(@PathVariable Long id, @RequestBody Periodo periodo){
         periodoService.atualizar(id, periodo);
-        return new ResponseEntity(PERIODO_ATUALIZADO,HttpStatus.OK);
+        return new ResponseEntity<>(PERIODO_ATUALIZADO,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity excluirPeriodo(@PathVariable Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> excluirPeriodo(@PathVariable Long id){
         periodoService.excluirPorId(id);
-        return new ResponseEntity(PERIODO_EXCLUIDO,HttpStatus.OK);
+        return new ResponseEntity<>(PERIODO_EXCLUIDO,HttpStatus.OK);
     }
-
 }
