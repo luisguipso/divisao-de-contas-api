@@ -1,49 +1,52 @@
 package gomes.luis.divisaodecontas.despesa;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/despesa")
+@RequestMapping("/api/v1/despesas")
 public class DespesaController {
     public static final String DESPESA_CRIADA = "Despesa criada.";
-    public static final String DESPESA_EXCLUIDA = "Despesa excluida.";
     public static final String DESPESA_ATUALIZADA = "Despesa atualizada.";
-    @Autowired
-    DespesaService despesaService;
+    public static final String DESPESA_EXCLUIDA = "Despesa excluida.";
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity buscarTodasAsDepesas(){
+    private final DespesaService despesaService;
+
+    public DespesaController(DespesaService despesaService){
+        this.despesaService = despesaService;
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<Despesa>> buscarTodasAsDepesas(){
         List<Despesa> despesas = despesaService.buscarTodasAsDepesas();
-        return new ResponseEntity<List<Despesa>>(despesas, HttpStatus.OK);
+        return new ResponseEntity<>(despesas, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity buscarDespesaPorId(@PathVariable(name = "id") Long id){
-        Optional<Despesa> despesa = despesaService.buscarPorId(id);
-        return new ResponseEntity<Despesa>(despesa.get(), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<Despesa> buscarDespesaPorId(@PathVariable(name = "id") Long id){
+        return despesaService.buscarPorId(id)
+                .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity salvarDespesa(@RequestBody Despesa despesa){
+    @PostMapping()
+    public ResponseEntity<String> salvarDespesa(@RequestBody Despesa despesa){
         despesaService.salvarDespesa(despesa);
         return new ResponseEntity<>(DESPESA_CRIADA,HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity atualizarDespesa(@PathVariable Long id, @RequestBody Despesa despesa){
+    @PutMapping("/{id}")
+    public ResponseEntity<String> atualizarDespesa(@PathVariable Long id, @RequestBody Despesa despesa){
         despesaService.atualizarDespesa(id, despesa);
-        return new ResponseEntity(DESPESA_ATUALIZADA,HttpStatus.OK);
+        return new ResponseEntity<>(DESPESA_ATUALIZADA,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity excluirDespesa(@PathVariable Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> excluirDespesa(@PathVariable Long id){
         despesaService.excluirPorId(id);
-        return new ResponseEntity(DESPESA_EXCLUIDA,HttpStatus.OK);
+        return new ResponseEntity<>(DESPESA_EXCLUIDA,HttpStatus.OK);
     }
 }

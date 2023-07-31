@@ -1,9 +1,5 @@
 package gomes.luis.divisaodecontas.pessoa;
 
-import gomes.luis.divisaodecontas.pessoa.Pessoa;
-import gomes.luis.divisaodecontas.pessoa.PessoaService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,50 +8,47 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/api/pessoas")
+@RequestMapping("/api/v1/pessoas")
 public class PessoaController {
 
-    @Autowired
+    public static final String PESSOA_CRIADA = "Pessoa criada.";
+    public static final String PESSOA_ATUALIZADA = "Pessoa atualizada.";
+    public static final String PESSOA_EXCLUIDA = "Pessoa excluida.";
     private PessoaService pessoaService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity buscarTodasAsPessoas(){
-        List<Pessoa> pessoas = pessoaService.buscarTodos();
-        return new ResponseEntity(pessoas, HttpStatus.OK);
+    PessoaController(PessoaService pessoaService){
+        this.pessoaService = pessoaService;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping()
+    public ResponseEntity<List<Pessoa>> buscarTodasAsPessoas(){
+        List<Pessoa> pessoas = pessoaService.buscarTodos();
+        return new ResponseEntity<>(pessoas, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<Pessoa> buscarPessoaPorId(@PathVariable(value = "id") Long id){
         Optional<Pessoa> pessoa = pessoaService.buscarPorId(id);
-        if(pessoa.isPresent())
-            return new ResponseEntity<Pessoa>(pessoa.get(), HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return pessoa
+                .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity salvarPessoa(@RequestBody Pessoa pessoa){
+    @PostMapping()
+    public ResponseEntity<String> salvarPessoa(@RequestBody Pessoa pessoa){
         pessoaService.salvar(pessoa);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(PESSOA_CRIADA, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Pessoa> atualizarPessoa(@RequestBody Pessoa pessoaAtualizada, @PathVariable(value = "id") Long id){
-        Optional<Pessoa> p = pessoaService.buscarPorId(id).map(pessoa -> {
-            pessoa.setNome(pessoaAtualizada.getNome());
-            return pessoaService.salvar(pessoa);
-        });
-        return new ResponseEntity<Pessoa>(p.get(),HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<String> atualizarPessoa(@RequestBody Pessoa pessoa, @PathVariable(value = "id") Long id){
+        pessoaService.atualizar(id, pessoa);
+        return new ResponseEntity<>(PESSOA_ATUALIZADA,HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> excluirPessoa(@PathVariable(value = "id") Long id){
-        try{
-            pessoaService.excluirPorId(id);
-        } catch (EntityNotFoundException e){
-            return new ResponseEntity<>("Pessoa não encontrada", HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        pessoaService.excluirPorId(id);
+        return new ResponseEntity<>(PESSOA_EXCLUIDA, HttpStatus.OK);
     }
-
 }
