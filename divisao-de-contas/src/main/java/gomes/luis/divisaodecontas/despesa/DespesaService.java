@@ -25,8 +25,10 @@ public class DespesaService extends GenericService<Despesa, Long> {
         return super.buscarPorId(id);
     }
 
-    public List<Despesa> buscarDespesasPorPeriodo(Periodo periodo) {
-        return despesaRepository.findByPeriodo(periodo);
+    public List<Despesa> buscarDespesasPorPeriodo(Long periodoId) {
+        Periodo periodoParaBusca = new Periodo();
+        periodoParaBusca.setId(periodoId);
+        return despesaRepository.findByPeriodo(periodoParaBusca);
     }
 
     public Despesa salvarDespesa(Despesa despesa) {
@@ -39,7 +41,7 @@ public class DespesaService extends GenericService<Despesa, Long> {
 
 
     public List<Despesa> pagarDespesas(List<Despesa> despesas) {
-        despesas.forEach(despesa -> pagarDespesa(despesa));
+        despesas.forEach(this::pagarDespesa);
         return despesas;
     }
 

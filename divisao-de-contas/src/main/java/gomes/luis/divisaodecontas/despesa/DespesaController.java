@@ -15,38 +15,44 @@ public class DespesaController {
 
     private final DespesaService despesaService;
 
-    public DespesaController(DespesaService despesaService){
+    public DespesaController(DespesaService despesaService) {
         this.despesaService = despesaService;
     }
 
     @GetMapping()
-    public ResponseEntity<List<Despesa>> buscarTodasAsDepesas(){
+    public ResponseEntity<List<Despesa>> buscarTodasAsDepesas() {
         List<Despesa> despesas = despesaService.buscarTodasAsDepesas();
         return new ResponseEntity<>(despesas, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Despesa> buscarDespesaPorId(@PathVariable(name = "id") Long id){
-        return despesaService.buscarPorId(id)
+    public ResponseEntity<Despesa> buscarDespesaPorId(@PathVariable(name = "id") Long id) {
+        return despesaService.buscarDespesaPorId(id)
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/buscarPorPeriodo")
+    public ResponseEntity<List<Despesa>> buscarDespesasPorPeriodo(@RequestParam Long periodoId) {
+        List<Despesa> despesasEncontradas = despesaService.buscarDespesasPorPeriodo(periodoId);
+        return new ResponseEntity<>(despesasEncontradas, HttpStatus.OK);
+    }
+
     @PostMapping()
-    public ResponseEntity<String> salvarDespesa(@RequestBody Despesa despesa){
+    public ResponseEntity<String> salvarDespesa(@RequestBody Despesa despesa) {
         despesaService.salvarDespesa(despesa);
-        return new ResponseEntity<>(DESPESA_CRIADA,HttpStatus.CREATED);
+        return new ResponseEntity<>(DESPESA_CRIADA, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> atualizarDespesa(@PathVariable Long id, @RequestBody Despesa despesa){
+    public ResponseEntity<String> atualizarDespesa(@PathVariable Long id, @RequestBody Despesa despesa) {
         despesaService.atualizarDespesa(id, despesa);
-        return new ResponseEntity<>(DESPESA_ATUALIZADA,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(DESPESA_ATUALIZADA, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> excluirDespesa(@PathVariable Long id){
+    public ResponseEntity<String> excluirDespesa(@PathVariable Long id) {
         despesaService.excluirPorId(id);
-        return new ResponseEntity<>(DESPESA_EXCLUIDA,HttpStatus.OK);
+        return new ResponseEntity<>(DESPESA_EXCLUIDA, HttpStatus.OK);
     }
 }
