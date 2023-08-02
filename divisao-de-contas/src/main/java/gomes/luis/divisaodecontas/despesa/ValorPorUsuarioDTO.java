@@ -1,25 +1,27 @@
 package gomes.luis.divisaodecontas.despesa;
 
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
+
 import java.math.BigDecimal;
 
 
 
 public class ValorPorUsuarioDTO {
 
-    private String nomeUsuario;
+    private Pessoa usuario;
     private BigDecimal valorTotal;
 
-    public ValorPorUsuarioDTO(String nomeUsuario, BigDecimal valorTotal) {
-        this.nomeUsuario = nomeUsuario;
+    public ValorPorUsuarioDTO(Pessoa usuario, BigDecimal valorTotal) {
+        this.usuario = usuario;
         this.valorTotal = valorTotal;
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public Pessoa getUsuario() {
+        return usuario;
     }
 
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public void setUsuario(Pessoa usuario) {
+        this.usuario = usuario;
     }
 
     public BigDecimal getValorTotal() {

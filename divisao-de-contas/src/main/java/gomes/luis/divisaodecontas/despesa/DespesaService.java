@@ -2,6 +2,7 @@ package gomes.luis.divisaodecontas.despesa;
 
 import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.periodo.PeriodoService;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
 import gomes.luis.divisaodecontas.service.GenericService;
 import org.springframework.stereotype.Service;
 
@@ -75,8 +76,8 @@ public class DespesaService extends GenericService<Despesa, Long> {
         return despesaRepository.buscarValorDevidoPorUsuarioNoPeriodo(periodoId)
                 .stream()
                 .map(tuple -> new ValorPorUsuarioDTO(
-                        tuple.get(0, String.class),
-                        tuple.get(1, BigDecimal.class)))
+                        new Pessoa(tuple.get(0, String.class), tuple.get(1, Integer.class)),
+                        tuple.get(2, BigDecimal.class)))
                 .toList();
     }
 
