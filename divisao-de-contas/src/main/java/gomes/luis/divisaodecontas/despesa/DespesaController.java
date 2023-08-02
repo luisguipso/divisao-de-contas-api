@@ -38,9 +38,9 @@ public class DespesaController {
         return new ResponseEntity<>(despesasEncontradas, HttpStatus.OK);
     }
 
-    @GetMapping("/valorTotalPorUsuarioNoPeriodo")
-    public ResponseEntity<List<ValorPorUsuarioDTO>> buscarValorTotalPorUsuarioNoPeriodo(@RequestParam Long periodoId) {
-        List<ValorPorUsuarioDTO> result = despesaService.buscarDespesasPorUsuarioNoPeriodo(periodoId);
+    @GetMapping("/buscarValorPagoPorUsuarioNoPeriodo")
+    public ResponseEntity<List<ValorPorUsuarioDTO>> buscarValorPagoPorUsuarioNoPeriodo(@RequestParam Long periodoId) {
+        List<ValorPorUsuarioDTO> result = despesaService.buscarValorPagoPorUsuarioNoPeriodo(periodoId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

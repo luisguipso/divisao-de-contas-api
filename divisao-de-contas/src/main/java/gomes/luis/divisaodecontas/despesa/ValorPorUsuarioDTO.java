@@ -6,20 +6,20 @@ import java.math.BigDecimal;
 
 public class ValorPorUsuarioDTO {
 
-    private String usuario;
+    private String nomeUsuario;
     private BigDecimal valorTotal;
 
-    public ValorPorUsuarioDTO(String usuario, BigDecimal valorTotal) {
-        this.usuario = usuario;
+    public ValorPorUsuarioDTO(String nomeUsuario, BigDecimal valorTotal) {
+        this.nomeUsuario = nomeUsuario;
         this.valorTotal = valorTotal;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getNomeUsuario() {
+        return nomeUsuario;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
     }
 
     public BigDecimal getValorTotal() {

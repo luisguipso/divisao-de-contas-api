@@ -67,8 +67,8 @@ public class DespesaService extends GenericService<Despesa, Long> {
         return atualizarDespesa(despesa.getId(), despesa);
     }
 
-    public List<ValorPorUsuarioDTO> buscarDespesasPorUsuarioNoPeriodo(Long periodoId) {
-        return despesaRepository.getSomaDespesasPorUsuarioNoPeriodo(periodoId);
+    public List<ValorPorUsuarioDTO> buscarValorPagoPorUsuarioNoPeriodo(Long periodoId) {
+        return despesaRepository.buscarValorPagoPorUsuarioNoPeriodo(periodoId);
     }
 
 }

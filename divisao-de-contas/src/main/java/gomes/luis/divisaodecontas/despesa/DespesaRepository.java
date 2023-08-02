@@ -23,5 +23,5 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
              WHERE d.periodo.id = :periodoId
              GROUP BY d.dono.id
             """)
-    List<ValorPorUsuarioDTO> getSomaDespesasPorUsuarioNoPeriodo(Long periodoId);
+    List<ValorPorUsuarioDTO> buscarValorPagoPorUsuarioNoPeriodo(Long periodoId);
 }
