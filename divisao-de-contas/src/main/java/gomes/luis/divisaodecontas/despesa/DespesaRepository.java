@@ -14,4 +14,14 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
 
     @Query("SELECT SUM(d.valor) FROM Despesa d WHERE d.periodo.id = :periodoId")
     BigDecimal sumValorByPeriodoId(Long periodoId);
+
+
+    @Query("""
+            SELECT new gomes.luis.divisaodecontas.despesa.TotalPorUsuarioNoPeriodoDTO(p.nome, sum(d.valor)) 
+            FROM Despesa d 
+            JOIN Pessoa p ON p.id = d.dono.id 
+            WHERE d.periodo.id = :periodoId 
+            group by d.dono.id
+            """)
+    List<TotalPorUsuarioNoPeriodoDTO> findSomaDespesasPorUsuarioNoPeriodoMapperByPeriodoId(Long periodoId);
 }
