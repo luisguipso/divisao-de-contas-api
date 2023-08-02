@@ -1,13 +1,20 @@
 package gomes.luis.divisaodecontas.pessoa;
 
 import gomes.luis.divisaodecontas.service.GenericService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class PessoaService extends GenericService<Pessoa, Long> {
-    @Autowired
-    public PessoaService(PessoaRepository repository) {
+
+    private final PessoaRepository pessoaRepository;
+    public PessoaService(PessoaRepository repository, PessoaRepository pessoaRepository) {
         super(repository);
+        this.pessoaRepository = pessoaRepository;
+    }
+
+    public Optional<Pessoa> buscarPorNome(String nome) {
+        return this.pessoaRepository.findByNome(nome);
     }
 }

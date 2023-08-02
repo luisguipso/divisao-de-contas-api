@@ -34,6 +34,14 @@ public class PessoaController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/buscarPorNome")
+    public ResponseEntity<Pessoa> buscarPessoaPorId(@RequestParam(value = "nome") String nome){
+        Optional<Pessoa> pessoa = pessoaService.buscarPorNome(nome);
+        return pessoa
+                .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping()
     public ResponseEntity<String> salvarPessoa(@RequestBody Pessoa pessoa){
         pessoaService.salvar(pessoa);

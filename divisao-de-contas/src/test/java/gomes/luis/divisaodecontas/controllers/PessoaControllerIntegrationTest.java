@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -40,7 +41,7 @@ public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationT
     @Test
     @Transactional
     public void criarPessoaHappyDay_RetornaIsCreated() throws Exception {
-        Pessoa pessoa = new Pessoa("Luis");
+        Pessoa pessoa = new Pessoa("Luis", 0);
 
 
         String json = mapper.writeValueAsString(pessoa);
@@ -55,8 +56,8 @@ public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationT
     @Test
     @Transactional
     public void buscarTodasAsPessoasHappyDay_RetornaPessoas() throws Exception {
-        criarPessoaViaRequest(new Pessoa("Luis"));
-        criarPessoaViaRequest(new Pessoa("Cyntia"));
+        criarPessoaViaRequest(new Pessoa("Luis", 0));
+        criarPessoaViaRequest(new Pessoa("Cyntia", 0));
 
         mockMvc.perform(MockMvcRequestBuilders.get(PESSOA_PATH))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(2)))
@@ -67,16 +68,16 @@ public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationT
     @Test
     @Transactional
     public void alterarPessoa_RetornaPessoasCorretamente() throws Exception {
-        criarPessoaViaRequest(new Pessoa("Luis"));
-        criarPessoaViaRequest(new Pessoa("Cyntia"));
+        criarPessoaViaRequest(new Pessoa("Luis", 0));
+        criarPessoaViaRequest(new Pessoa("Cyntia", 0));
 
         mockMvc.perform(MockMvcRequestBuilders.get(PESSOA_PATH))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome").value("Luis"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].nome").value("Cyntia"));
 
-        List<Pessoa> pessoas = pessoaRepository.findByNome("Luis");
-        Pessoa alterada = pessoas.get(0);
+        Optional<Pessoa> pessoa = pessoaRepository.findByNome("Luis");
+        Pessoa alterada = pessoa.orElseThrow();
         alterada.setNome("Joao");
 
         String caminhoUpdatePessoa1 = PESSOA_PATH + "/" + alterada.getId().toString();
