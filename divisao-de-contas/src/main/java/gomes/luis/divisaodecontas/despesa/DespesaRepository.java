@@ -1,6 +1,7 @@
 package gomes.luis.divisaodecontas.despesa;
 
 import gomes.luis.divisaodecontas.periodo.Periodo;
+import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,18 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
              GROUP BY d.dono.id
             """)
     List<ValorPorUsuarioDTO> buscarValorPagoPorUsuarioNoPeriodo(Long periodoId);
+
+    @Query(value = """
+            SELECT u.nome AS nome, SUM(d.valor) * (u.percentual / 100) AS valor
+             FROM despesa d
+             JOIN periodo p ON p.id = d.id_periodo
+             JOIN pagadores_dos_periodos pp ON pp.id_periodo = p.id
+             JOIN pessoa u ON u.id = pp.id_pagador
+             WHERE d.id_periodo = :periodoId
+             GROUP BY u.id""",
+            nativeQuery = true)
+    List<Tuple> buscarValorDevidoPorUsuarioNoPeriodo(Long periodoId);
+
+
+
 }

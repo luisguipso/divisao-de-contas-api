@@ -71,4 +71,13 @@ public class DespesaService extends GenericService<Despesa, Long> {
         return despesaRepository.buscarValorPagoPorUsuarioNoPeriodo(periodoId);
     }
 
+    public List<ValorPorUsuarioDTO> buscarValorDevidoPorUsuarioNoPeriodo(Long periodoId){
+        return despesaRepository.buscarValorDevidoPorUsuarioNoPeriodo(periodoId)
+                .stream()
+                .map(tuple -> new ValorPorUsuarioDTO(
+                        tuple.get(0, String.class),
+                        tuple.get(1, BigDecimal.class)))
+                .toList();
+    }
+
 }
