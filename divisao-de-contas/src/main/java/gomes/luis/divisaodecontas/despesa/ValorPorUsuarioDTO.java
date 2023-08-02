@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 
 
 
-public class TotalPorUsuarioNoPeriodoDTO {
+public class ValorPorUsuarioDTO {
 
     private String usuario;
     private BigDecimal valorTotal;
 
-    public TotalPorUsuarioNoPeriodoDTO(String usuario, BigDecimal valorTotal) {
+    public ValorPorUsuarioDTO(String usuario, BigDecimal valorTotal) {
         this.usuario = usuario;
         this.valorTotal = valorTotal;
     }

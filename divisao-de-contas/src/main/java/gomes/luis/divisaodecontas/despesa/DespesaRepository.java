@@ -17,11 +17,11 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
 
 
     @Query("""
-            SELECT new gomes.luis.divisaodecontas.despesa.TotalPorUsuarioNoPeriodoDTO(p.nome, sum(d.valor)) 
-            FROM Despesa d 
-            JOIN Pessoa p ON p.id = d.dono.id 
-            WHERE d.periodo.id = :periodoId 
-            group by d.dono.id
+            SELECT new gomes.luis.divisaodecontas.despesa.ValorPorUsuarioDTO(p.nome, sum(d.valor))
+             FROM Despesa d
+             JOIN Pessoa p ON p.id = d.dono.id
+             WHERE d.periodo.id = :periodoId
+             GROUP BY d.dono.id
             """)
-    List<TotalPorUsuarioNoPeriodoDTO> findSomaDespesasPorUsuarioNoPeriodoMapperByPeriodoId(Long periodoId);
+    List<ValorPorUsuarioDTO> getSomaDespesasPorUsuarioNoPeriodo(Long periodoId);
 }
