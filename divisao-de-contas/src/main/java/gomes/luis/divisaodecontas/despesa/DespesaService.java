@@ -1,9 +1,11 @@
 package gomes.luis.divisaodecontas.despesa;
 
 import gomes.luis.divisaodecontas.periodo.Periodo;
+import gomes.luis.divisaodecontas.periodo.PeriodoService;
 import gomes.luis.divisaodecontas.service.GenericService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,10 +13,12 @@ import java.util.Optional;
 public class DespesaService extends GenericService<Despesa, Long> {
 
     private final DespesaRepository despesaRepository;
+    private final PeriodoService periodoService;
 
-    public DespesaService(DespesaRepository despesaRepository) {
+    public DespesaService(DespesaRepository despesaRepository, PeriodoService periodoService) {
         super(despesaRepository);
         this.despesaRepository = despesaRepository;
+        this.periodoService = periodoService;
     }
 
     public List<Despesa> buscarTodasAsDepesas() {
@@ -32,11 +36,28 @@ public class DespesaService extends GenericService<Despesa, Long> {
     }
 
     public Despesa salvarDespesa(Despesa despesa) {
-        return super.salvar(despesa);
+        Despesa despesaSalva = super.salvar(despesa);
+        atualizarValorDoPeriodo(despesa.getPeriodo().getId());
+        return despesaSalva;
+    }
+
+    private void atualizarValorDoPeriodo(Long periodoId) {
+        BigDecimal valorTotal = calcularValorTotalDasDespesas(periodoId);
+        periodoService.atualizarValorPeriodo(periodoId, valorTotal);
+    }
+
+    private BigDecimal calcularValorTotalDasDespesas(Long periodoId){
+        return buscarDespesasPorPeriodo(periodoId)
+                .stream()
+                .map(Despesa::getValor)
+                .reduce(BigDecimal::add)
+                .orElseGet(() -> new BigDecimal(0));
     }
 
     public Despesa atualizarDespesa(Long id, Despesa attDespesa) {
-        return super.atualizar(id, attDespesa);
+        Despesa despesaAtualizada = super.atualizar(id, attDespesa);
+        atualizarValorDoPeriodo(despesaAtualizada.getPeriodo().getId());
+        return despesaAtualizada;
     }
 
 

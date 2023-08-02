@@ -22,10 +22,9 @@ public class PeriodoService extends GenericService<Periodo, Long> {
         return periodos;
     }
 
-    protected Periodo fecharPeriodo(Periodo periodo, BigDecimal valorTotal){
-        periodo.setFechado(true);
-        periodo.setValorTotal(valorTotal);
-        atualizar(periodo.getId(), periodo);
-        return periodo;
+    public void atualizarValorPeriodo(Long id, BigDecimal valor) {
+        Periodo periodo = this.buscarPorId(id).orElseThrow();
+        periodo.setValorTotal(valor);
+        this.salvar(periodo);
     }
 }
