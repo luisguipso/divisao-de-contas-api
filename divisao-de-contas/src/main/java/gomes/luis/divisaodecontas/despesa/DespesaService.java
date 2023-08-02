@@ -2,6 +2,7 @@ package gomes.luis.divisaodecontas.despesa;
 
 import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.periodo.PeriodoService;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
 import gomes.luis.divisaodecontas.service.GenericService;
 import org.springframework.stereotype.Service;
 
@@ -42,16 +43,12 @@ public class DespesaService extends GenericService<Despesa, Long> {
     }
 
     private void atualizarValorDoPeriodo(Long periodoId) {
-        BigDecimal valorTotal = calcularValorTotalDasDespesas(periodoId);
+        BigDecimal valorTotal = getValorTotalNoPeriodo(periodoId);
         periodoService.atualizarValorPeriodo(periodoId, valorTotal);
     }
 
-    private BigDecimal calcularValorTotalDasDespesas(Long periodoId){
-        return buscarDespesasPorPeriodo(periodoId)
-                .stream()
-                .map(Despesa::getValor)
-                .reduce(BigDecimal::add)
-                .orElseGet(() -> new BigDecimal(0));
+    private BigDecimal getValorTotalNoPeriodo(Long periodoId) {
+        return despesaRepository.sumValorByPeriodoId(periodoId);
     }
 
     public Despesa atualizarDespesa(Long id, Despesa attDespesa) {
@@ -70,4 +67,21 @@ public class DespesaService extends GenericService<Despesa, Long> {
         despesa.setPago(true);
         return atualizarDespesa(despesa.getId(), despesa);
     }
+
+//    public List<Despesa> buscarDespesasPorUsuarioNoPeriodo(Long periodoId) {
+//        Periodo periodo = periodoService.buscarPorId(periodoId).orElseThrow();
+//        periodo.getPagadores().stream()
+//                .map(usuario -> {
+//                    getTotalPorUsuarioDTO(periodo, usuario);
+//                });
+//        return ;
+//    }
+//
+//    private void getTotalPorUsuarioDTO(Periodo periodo, Pessoa usuario) {
+//        TotalPorUsuarioNoPeriodoDto totalUsuario = new TotalPorUsuarioNoPeriodoDto();
+//        totalUsuario.setPeriodo(periodo);
+//        totalUsuario.setPessoa(usuario);
+//        totalUsuario.setValorTotal(despesaRepository.sumByPeriodoAndPagador(periodo.getId(), usuario.getId()));
+//        ;
+//    }
 }
