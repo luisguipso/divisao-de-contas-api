@@ -27,7 +27,7 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
     List<ValorPorUsuarioDTO> buscarValorPagoPorUsuarioNoPeriodo(Long periodoId);
 
     @Query(value = """
-            SELECT u.nome AS nome, u.percentual, SUM(d.valor) * (u.percentual / 100) AS valor
+            SELECT u.id as id, u.nome AS nome, u.percentual, SUM(d.valor) * (u.percentual / 100) AS valor
              FROM despesa d
              JOIN periodo p ON p.id = d.id_periodo
              JOIN pagadores_dos_periodos pp ON pp.id_periodo = p.id

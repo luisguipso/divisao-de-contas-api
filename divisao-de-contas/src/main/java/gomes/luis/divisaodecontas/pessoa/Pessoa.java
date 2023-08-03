@@ -24,6 +24,10 @@ public class Pessoa implements Serializable {
         this.nome = nome;
         this.percentual = percentual;
     }
+    public Pessoa(Long id, String nome, int percentual) {
+        this(nome, percentual);
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
