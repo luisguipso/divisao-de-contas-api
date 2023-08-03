@@ -56,7 +56,7 @@ class PeriodoControllerTest {
 
     @Test
     void buscarTodosOsPeriodosHappyDay_DeveRetornarSucesso() throws Exception {
-        when(periodoService.buscarTodosOsPeriodos())
+        when(periodoService.buscarTodosOsPeriodos(1, 10))
                 .thenReturn(List.of(maio));
 
         mockMvc.perform(get("/periodo"))
@@ -65,7 +65,7 @@ class PeriodoControllerTest {
 
     @Test
     void buscarTodosOsPeriodosQuandoNaoExistem_DeveRetornarPeriodosNaoCadastrados() throws Exception {
-        when(periodoService.buscarTodosOsPeriodos())
+        when(periodoService.buscarTodosOsPeriodos(1, 10))
                 .thenThrow(new EntityNotFoundException());
 
         mockMvc.perform(get("/periodo")

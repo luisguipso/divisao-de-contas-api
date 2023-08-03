@@ -2,6 +2,9 @@ package gomes.luis.divisaodecontas.periodo;
 
 
 import gomes.luis.divisaodecontas.service.GenericService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -12,12 +15,15 @@ import java.util.List;
 @EnableTransactionManagement
 public class PeriodoService extends GenericService<Periodo, Long> {
 
+    PeriodoRepository repository;
     public PeriodoService(PeriodoRepository repository) {
         super(repository);
+        this.repository = repository;
     }
 
-    public List<Periodo> buscarTodosOsPeriodos() {
-        List<Periodo> periodos = super.buscarTodos();
+    public List<Periodo> buscarTodosOsPeriodos(int pagina, int tamanho) {
+        Pageable paginavel = PageRequest.of(pagina, tamanho, Sort.by("id").descending());
+        List<Periodo> periodos = repository.findAll(paginavel).getContent();
         // TODO SORT BY MES
         return periodos;
     }

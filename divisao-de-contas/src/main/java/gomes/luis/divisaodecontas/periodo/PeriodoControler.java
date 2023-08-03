@@ -22,8 +22,9 @@ public class PeriodoControler {
     }
 
     @GetMapping
-    public ResponseEntity<List<Periodo>> buscarTodosOsPeriodos(){
-        List<Periodo> periodos = periodoService.buscarTodosOsPeriodos();
+    public ResponseEntity<List<Periodo>> buscarTodosOsPeriodos(@RequestParam(defaultValue = "0") int pagina,
+                                                               @RequestParam(defaultValue = "10") int tamanho){
+        List<Periodo> periodos = periodoService.buscarTodosOsPeriodos(pagina, tamanho);
         return new ResponseEntity<>(periodos, HttpStatus.OK);
     }
 
