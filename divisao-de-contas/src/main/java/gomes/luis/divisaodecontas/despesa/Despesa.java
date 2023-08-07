@@ -1,16 +1,14 @@
 package gomes.luis.divisaodecontas.despesa;
 
 
-
+import gomes.luis.divisaodecontas.categoria.Categoria;
 import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.pessoa.Pessoa;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "despesa")
@@ -19,21 +17,17 @@ public class Despesa implements Serializable {
     @Id
     @GeneratedValue()
     private Long id;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String descricao;
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_dono")
     private Pessoa dono;
     @Column
     private boolean isDivisivel;
 
-    @ManyToMany
-    @JoinTable(name = "pagadores_das_despesas",
-            joinColumns = @JoinColumn(name = "id_despesa"),
-            inverseJoinColumns = @JoinColumn(name = "id_pagador"))
-    private List<Pessoa> pagadores = new ArrayList<>();
-
-
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
     @Column(nullable = false)
     private Date data;
     @ManyToOne
@@ -47,11 +41,21 @@ public class Despesa implements Serializable {
     public Despesa() {
     }
 
-    public Despesa(String descricao, Pessoa dono, boolean isDivisivel, Date data, Periodo periodo, BigDecimal valor, boolean isPago) {
+    public Despesa(
+            String descricao,
+            Pessoa dono,
+            boolean isDivisivel,
+            Categoria categoria,
+            Date data,
+            Periodo periodo,
+            BigDecimal valor,
+            boolean isPago
+    ) {
         this();
         this.descricao = descricao;
         this.dono = dono;
         this.isDivisivel = isDivisivel;
+        this.categoria = categoria;
         this.data = data;
         this.periodo = periodo;
         this.valor = valor;
@@ -82,21 +86,20 @@ public class Despesa implements Serializable {
         this.dono = dono;
     }
 
-
-    public List<Pessoa> getPagadores(){
-        return !pagadores.isEmpty() ? pagadores : List.of(getDono());
+    public boolean isDivisivel() {
+        return isDivisivel;
     }
 
-    public void adicionarPagador(Pessoa pagador){
-        if(pagador != null && !getPagadores().contains(pagador)) {
-            pagadores.add(pagador);
-        }
+    public void setDivisivel(boolean divisivel) {
+        isDivisivel = divisivel;
     }
 
-    public void removerPagador(Pessoa pagador){
-        if(pagadores.contains(pagador)){
-            pagadores.remove(pagador);
-        }
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public Date getData() {
@@ -121,14 +124,6 @@ public class Despesa implements Serializable {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
-    }
-
-    public boolean isDivisivel() {
-        return isDivisivel;
-    }
-
-    public void setDivisivel(boolean divisivel) {
-        isDivisivel = divisivel;
     }
 
     public boolean isPago() {

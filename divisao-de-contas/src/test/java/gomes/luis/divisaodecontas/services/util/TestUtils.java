@@ -1,5 +1,6 @@
 package gomes.luis.divisaodecontas.services.util;
 
+import gomes.luis.divisaodecontas.categoria.Categoria;
 import gomes.luis.divisaodecontas.despesa.Despesa;
 import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.pessoa.Pessoa;
@@ -14,6 +15,7 @@ public class TestUtils {
         return new Despesa("",
                 mock(Pessoa.class),
                 true,
+                mock(Categoria.class),
                 mock(Date.class),
                 mock(Periodo.class),
                 valor,
