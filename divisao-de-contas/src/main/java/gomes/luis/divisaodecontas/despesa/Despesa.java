@@ -25,12 +25,12 @@ public class Despesa implements Serializable {
     @Column
     private boolean isDivisivel;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
     @Column(nullable = false)
     private Date data;
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_periodo")
     private Periodo periodo;
     @Column(nullable = false)
