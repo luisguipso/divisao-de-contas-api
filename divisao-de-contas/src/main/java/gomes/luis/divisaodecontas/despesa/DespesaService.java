@@ -2,9 +2,7 @@ package gomes.luis.divisaodecontas.despesa;
 
 import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.periodo.PeriodoService;
-import gomes.luis.divisaodecontas.pessoa.Pessoa;
 import gomes.luis.divisaodecontas.service.GenericService;
-import jakarta.persistence.Tuple;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -67,23 +65,6 @@ public class DespesaService extends GenericService<Despesa, Long> {
     public Despesa pagarDespesa(Despesa despesa) {
         despesa.setPago(true);
         return atualizarDespesa(despesa.getId(), despesa);
-    }
-
-    public List<ValorPorUsuarioDTO> buscarValorPagoPorUsuarioNoPeriodo(Long periodoId) {
-        return despesaRepository.buscarValorPagoPorUsuarioNoPeriodo(periodoId);
-    }
-
-    public List<ValorPorUsuarioDTO> buscarValorDevidoPorUsuarioNoPeriodo(Long periodoId){
-        return despesaRepository.buscarValorDevidoPorUsuarioNoPeriodo(periodoId)
-                .stream()
-                .map(tuple -> new ValorPorUsuarioDTO(
-                        getPessoa(tuple),
-                        tuple.get(3, BigDecimal.class)))
-                .toList();
-    }
-
-    private static Pessoa getPessoa(Tuple tuple) {
-        return new Pessoa(tuple.get(0, Long.class), tuple.get(1, String.class), tuple.get(2, Integer.class));
     }
 
 }
