@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/extratoPorUsuario")
+@RequestMapping("/api/v1/extrato/usuario")
 public class ExtratoPorUsuarioController {
 
     private final ExtratoPorUsuarioService extratoPorUsuarioService;
