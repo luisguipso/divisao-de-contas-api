@@ -20,23 +20,6 @@ public class ExtratoPorCategoriaController {
         this.extratoPorCategoriaService = extratoPorCategoriaService;
         this.converterToDTO = converterToDTO;
     }
-    @GetMapping("/buscarValorPagoPorUsuarioNoPeriodo")
-    public ResponseEntity<List<ValorPorCategoriaDTO>> buscarValorPagoPorUsuarioNoPeriodo(@RequestParam Long periodoId) {
-        List<ValorPorCategoriaDTO> result = extratoPorCategoriaService.buscarValorPagoPorUsuarioNoPeriodo(periodoId)
-                .stream()
-                .map(converterToDTO::convert)
-                .toList();
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @GetMapping("/buscarValorDevidoPorUsuarioNoPeriodo")
-    public ResponseEntity<List<ValorPorCategoriaDTO>> buscarValorDevidoPorUsuarioNoPeriodo(@RequestParam Long periodoId) {
-        List<ValorPorCategoriaDTO> result = extratoPorCategoriaService.buscarValorDevidoPorUsuarioNoPeriodo(periodoId)
-                .stream()
-                .map(converterToDTO::convert)
-                .toList();
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 
     @GetMapping("/buscarValorTotalPorCategoriaEUsuarioNoPeriodo")
     public ResponseEntity<List<ValorPorCategoriaDTO>> buscarValorTotalPorCategoriaEUsuarioNoPeriodo(@RequestParam Long periodoId, @RequestParam Long usuarioId){
