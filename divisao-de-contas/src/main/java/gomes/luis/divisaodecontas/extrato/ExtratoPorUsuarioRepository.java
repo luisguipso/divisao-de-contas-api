@@ -19,13 +19,27 @@ public interface ExtratoPorUsuarioRepository extends JpaRepository<ValorPorUsuar
     List<ValorPorUsuario> buscarValorPagoPorUsuarioNoPeriodo(Long periodoId);
 
     @Query(value = """
-            SELECT u.id as id, u.nome AS nome, u.percentual, SUM(d.valor) * (u.percentual / 100) AS valor
-             FROM despesa d
-             JOIN periodo p ON p.id = d.id_periodo
-             JOIN pagadores_dos_periodos pp ON pp.id_periodo = p.id
-             JOIN pessoa u ON u.id = pp.id_pagador
-             WHERE d.id_periodo = :periodoId
-             GROUP BY u.id""",
+            WITH totalDevidoPorUsuarioNoPeriodo AS (
+                SELECT u.id, u.nome, u.percentual, SUM(d.valor) * (u.percentual / 100) AS valor
+                FROM despesa d
+                         JOIN periodo p ON p.id = d.id_periodo
+                         JOIN pagadores_dos_periodos pp ON pp.id_periodo = p.id
+                         JOIN pessoa u ON u.id = pp.id_pagador
+                WHERE d.id_periodo = :periodoId
+                AND d.is_divisivel = 1
+                GROUP BY u.id
+                union all
+                SELECT u.id, u.nome, 100, SUM(d.valor) AS valor
+                FROM despesa d
+                         JOIN periodo p ON p.id = d.id_periodo
+                         JOIN pessoa u ON u.id = d.id_dono
+                WHERE d.id_periodo = :periodoId
+                  AND d.is_divisivel = 0
+                GROUP BY u.id
+            )
+            SELECT id, nome , AVG(percentual), SUM(valor)
+            FROM totalDevidoPorUsuarioNoPeriodo
+            GROUP BY id, nome""",
             nativeQuery = true)
     List<Tuple> buscarValorDevidoPorUsuarioNoPeriodo(Long periodoId);
 }

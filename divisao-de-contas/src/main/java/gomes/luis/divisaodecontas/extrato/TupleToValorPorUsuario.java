@@ -23,6 +23,10 @@ public class TupleToValorPorUsuario implements Converter<Tuple, ValorPorUsuario>
     }
 
     private static Pessoa getPessoa(Tuple tuple) {
-        return new Pessoa(tuple.get(0, Long.class), tuple.get(1, String.class), tuple.get(2, Integer.class));
+        Long id = tuple.get(0, Long.class);
+        String nome = tuple.get(1, String.class);
+        BigDecimal percentualFracionado = tuple.get(2, BigDecimal.class);
+        int percentual = percentualFracionado.intValue();
+        return new Pessoa(id, nome, percentual);
     }
 }
