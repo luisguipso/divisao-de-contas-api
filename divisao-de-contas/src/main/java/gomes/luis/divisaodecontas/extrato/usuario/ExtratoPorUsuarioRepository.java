@@ -1,4 +1,4 @@
-package gomes.luis.divisaodecontas.extrato;
+package gomes.luis.divisaodecontas.extrato.usuario;
 
 import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface ExtratoPorUsuarioRepository extends JpaRepository<ValorPorUsuario, Long> {
     @Query("""
-            SELECT new gomes.luis.divisaodecontas.extrato.ValorPorUsuario(d.dono , sum(d.valor))
+            SELECT new gomes.luis.divisaodecontas.extrato.usuario.ValorPorUsuario(d.dono , sum(d.valor))
              FROM Despesa d
              JOIN Pessoa p ON p.id = d.dono.id
              WHERE d.periodo.id = :periodoId

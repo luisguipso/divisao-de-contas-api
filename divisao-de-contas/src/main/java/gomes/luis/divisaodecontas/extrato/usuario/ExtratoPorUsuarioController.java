@@ -1,4 +1,4 @@
-package gomes.luis.divisaodecontas.extrato;
+package gomes.luis.divisaodecontas.extrato.usuario;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
