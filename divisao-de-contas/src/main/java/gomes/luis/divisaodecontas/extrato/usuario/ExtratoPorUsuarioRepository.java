@@ -1,4 +1,4 @@
-package gomes.luis.divisaodecontas.extrato;
+package gomes.luis.divisaodecontas.extrato.usuario;
 
 import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
