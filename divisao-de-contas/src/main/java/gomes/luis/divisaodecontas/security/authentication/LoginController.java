@@ -2,7 +2,6 @@ package gomes.luis.divisaodecontas.security.authentication;
 
 import gomes.luis.divisaodecontas.security.authentication.dto.LoginResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,10 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping()
 public class LoginController {
 
+    LoginService loginService;
+
+    LoginController(LoginService loginService){
+        this.loginService = loginService;
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(String username, String password) {
-        if(username.equals("username") && password.equals("123456"))
-            return ResponseEntity.ok(new LoginResponse("abc"));
-        throw new AuthenticationCredentialsNotFoundException("Unauthorized.");
+        LoginResponse loginResponse = loginService.login(username, password);
+        return ResponseEntity.ok(loginResponse);
     }
 }
