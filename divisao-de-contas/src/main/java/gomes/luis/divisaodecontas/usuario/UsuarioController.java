@@ -1,11 +1,11 @@
 package gomes.luis.divisaodecontas.usuario;
 
+import gomes.luis.divisaodecontas.usuario.dto.UsuarioResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
@@ -15,24 +15,22 @@ public class UsuarioController {
     public static final String USUARIO_CRIADO = "Usuario criado.";
     public static final String USUARIO_ATUALIZADO = "Usuario atualizado.";
     public static final String USUARIO_EXCLUIDO = "Usuario excluido.";
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     UsuarioController(UsuarioService usuarioService){
         this.usuarioService = usuarioService;
     }
 
     @GetMapping()
-    public ResponseEntity<List<Usuario>> buscarTodasAsUsuarios(){
-        List<Usuario> usuarios = usuarioService.buscarTodos();
+    public ResponseEntity<List<UsuarioResponseDTO>> buscarTodasAsUsuarios(){
+        List<UsuarioResponseDTO> usuarios = usuarioService.buscarTodos();
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable(value = "id") Long id){
-        Optional<Usuario> usuario = usuarioService.buscarPorId(id);
-        return usuario
-                .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<UsuarioResponseDTO> buscarUsuarioPorId(@PathVariable(value = "id") Long id){
+        UsuarioResponseDTO usuario = usuarioService.buscarPorId(id);
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
     @PostMapping()
