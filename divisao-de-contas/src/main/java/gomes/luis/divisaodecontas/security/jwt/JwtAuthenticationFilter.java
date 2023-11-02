@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String TOKEN_PREFIX = "Bearer";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
@@ -30,7 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private static void authorizeRequest(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        String accessToken = request.getHeader(AUTHORIZATION_HEADER);
+        String accessToken = request.getHeader(AUTHORIZATION_HEADER)
+                .replace(TOKEN_PREFIX, "")
+                .trim();
         if(StringUtils.isEmpty(accessToken) || !accessToken.equals("123"))
             throw new AuthenticationCredentialsNotFoundException("Invalid token.");
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("username", null, new ArrayList<>());
