@@ -18,20 +18,17 @@ public class LoginService {
     public LoginResponse login(String username, String password){
         Usuario usuario = buscarUsuario(username);
         if(!usuario.getPassword().equals(password))
-            throwUnauthorized();
+            throw getUnauthorizedException("Unauthorized.");
         return new LoginResponse("abc");
-    }
-
-    private static void throwUnauthorized() {
-        throw getUnauthorized();
-    }
-
-    private static AuthenticationCredentialsNotFoundException getUnauthorized() {
-        return new AuthenticationCredentialsNotFoundException("Unauthorized.");
     }
 
     private Usuario buscarUsuario(String username) {
         return usuarioService.buscarPorUsername(username)
-                .orElseThrow(LoginService::getUnauthorized);
+                .orElseThrow(() -> getUnauthorizedException("User not found."));
     }
+
+    private static AuthenticationCredentialsNotFoundException getUnauthorizedException(String message) {
+        return new AuthenticationCredentialsNotFoundException(message);
+    }
+
 }
