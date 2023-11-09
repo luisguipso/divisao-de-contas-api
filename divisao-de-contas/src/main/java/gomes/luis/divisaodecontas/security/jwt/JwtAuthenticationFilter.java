@@ -31,13 +31,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private static void authorizeRequest(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        String accessToken = request.getHeader(AUTHORIZATION_HEADER)
-                .replace(TOKEN_PREFIX, "")
-                .trim();
-        if(StringUtils.isEmpty(accessToken) || !accessToken.equals("123"))
+        String accessToken = getAccessTokenFromHeader(request);
+        if(StringUtils.isEmpty(accessToken)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if(!accessToken.equals("123"))
             throw new AuthenticationCredentialsNotFoundException("Invalid token.");
+
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("username", null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(auth);
         filterChain.doFilter(request, response);
+    }
+
+    private static String getAccessTokenFromHeader(HttpServletRequest request) {
+        String header = request.getHeader(AUTHORIZATION_HEADER);
+        if(StringUtils.isEmpty(header))
+            return header;
+
+        return header
+                .replace(TOKEN_PREFIX, "")
+                .trim();
     }
 }
