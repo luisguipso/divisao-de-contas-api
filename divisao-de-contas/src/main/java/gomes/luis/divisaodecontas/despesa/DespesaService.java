@@ -1,6 +1,5 @@
 package gomes.luis.divisaodecontas.despesa;
 
-import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.periodo.PeriodoService;
 import gomes.luis.divisaodecontas.service.GenericService;
 import org.springframework.stereotype.Service;
@@ -30,9 +29,7 @@ public class DespesaService extends GenericService<Despesa, Long> {
     }
 
     public List<Despesa> buscarDespesasPorPeriodo(Long periodoId) {
-        Periodo periodoParaBusca = new Periodo();
-        periodoParaBusca.setId(periodoId);
-        return despesaRepository.findByPeriodo(periodoParaBusca);
+        return despesaRepository.findByPeriodoId(periodoId);
     }
 
     public Despesa salvarDespesa(Despesa despesa) {
