@@ -1,9 +1,13 @@
 package gomes.luis.divisaodecontas.security.authentication.dto;
 
-public class LoginResponse {
-    public String accessToken;
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
 
-    public LoginResponse(String accessToken) {
+public class LoginResponse {
+    public final String accessToken;
+    public final Pessoa usuarioLogado;
+
+    public LoginResponse(String accessToken, Pessoa usuarioLogado) {
         this.accessToken = accessToken;
+        this.usuarioLogado = usuarioLogado;
     }
 }

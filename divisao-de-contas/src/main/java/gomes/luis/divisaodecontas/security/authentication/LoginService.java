@@ -19,7 +19,7 @@ public class LoginService {
         Usuario usuario = buscarUsuario(username);
         if(!usuario.getPassword().equals(password))
             throw getUnauthorizedException("Unauthorized.");
-        return new LoginResponse("abc");
+        return new LoginResponse("123", usuario.getPessoa());
     }
 
     private Usuario buscarUsuario(String username) {

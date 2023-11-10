@@ -1,5 +1,6 @@
 package gomes.luis.divisaodecontas.usuario;
 
+import gomes.luis.divisaodecontas.pessoa.Pessoa;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,9 @@ public class Usuario {
     @Column(name = "password")
     private String password;
 
+    @OneToOne
+    @JoinColumn(name = "id_pessoa")
+    private Pessoa pessoa;
 
     public Usuario(String username, String password) {
         this.username = username;
@@ -44,5 +48,13 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 }
