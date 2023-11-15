@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "pessoa")
-public class Pessoa implements Serializable {
+public class Pessoa implements Serializable, Comparable<Pessoa> {
     @Id
     @GeneratedValue()
     private Long id;
@@ -16,6 +16,11 @@ public class Pessoa implements Serializable {
 
     @Column(nullable = false)
     private int percentual;
+
+    @Override
+    public int compareTo(Pessoa p) {
+        return this.getId().compareTo(p.getId());
+    }
 
     public Pessoa() {
     }
@@ -52,4 +57,5 @@ public class Pessoa implements Serializable {
     public void setPercentual(int percentual) {
         this.percentual = percentual;
     }
+
 }
