@@ -1,11 +1,8 @@
-package gomes.luis.divisaodecontas.controllers;
+package gomes.luis.divisaodecontas.periodo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
-import gomes.luis.divisaodecontas.periodo.Periodo;
-import gomes.luis.divisaodecontas.periodo.PeriodoControler;
-import gomes.luis.divisaodecontas.periodo.PeriodoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

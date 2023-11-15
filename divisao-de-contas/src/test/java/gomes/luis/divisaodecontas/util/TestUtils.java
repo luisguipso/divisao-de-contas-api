@@ -1,4 +1,4 @@
-package gomes.luis.divisaodecontas.services.util;
+package gomes.luis.divisaodecontas.util;
 
 import gomes.luis.divisaodecontas.categoria.Categoria;
 import gomes.luis.divisaodecontas.despesa.Despesa;

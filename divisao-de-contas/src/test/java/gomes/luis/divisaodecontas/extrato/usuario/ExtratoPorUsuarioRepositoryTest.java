@@ -1,12 +1,9 @@
-package gomes.luis.divisaodecontas.repositories;
+package gomes.luis.divisaodecontas.extrato.usuario;
 
 import gomes.luis.divisaodecontas.categoria.Categoria;
 import gomes.luis.divisaodecontas.categoria.CategoriaRepository;
 import gomes.luis.divisaodecontas.despesa.Despesa;
 import gomes.luis.divisaodecontas.despesa.DespesaRepository;
-import gomes.luis.divisaodecontas.extrato.usuario.ExtratoPorUsuarioRepository;
-import gomes.luis.divisaodecontas.extrato.usuario.TupleToValorPorUsuario;
-import gomes.luis.divisaodecontas.extrato.usuario.ValorPorUsuario;
 import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.periodo.PeriodoRepository;
 import gomes.luis.divisaodecontas.pessoa.Pessoa;

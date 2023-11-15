@@ -1,4 +1,4 @@
-package gomes.luis.divisaodecontas.controllers;
+package gomes.luis.divisaodecontas.periodo;
 
 import gomes.luis.divisaodecontas.pessoa.Pessoa;
 import gomes.luis.divisaodecontas.pessoa.PessoaController;

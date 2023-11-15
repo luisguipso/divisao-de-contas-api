@@ -1,8 +1,5 @@
-package gomes.luis.divisaodecontas.services;
+package gomes.luis.divisaodecontas.despesa;
 
-import gomes.luis.divisaodecontas.despesa.Despesa;
-import gomes.luis.divisaodecontas.despesa.DespesaRepository;
-import gomes.luis.divisaodecontas.despesa.DespesaService;
 import gomes.luis.divisaodecontas.periodo.PeriodoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import static gomes.luis.divisaodecontas.services.util.TestUtils.criarDespesa;
+import static gomes.luis.divisaodecontas.util.TestUtils.criarDespesa;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
