@@ -52,7 +52,7 @@ public interface ExtratoPorUsuarioRepository extends JpaRepository<ValorPorUsuar
                 WHERE d.periodo.id = :periodoId
                   AND d.isDivisivel = false
                 GROUP BY u.id""")
-    List<ValorPorUsuario> buscarValorDevidoDasDespesasNaoDivisivelPorUsuarioNoPeriodo(Long periodoId);
+    List<ValorPorUsuario> buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(Long periodoId);
 
     @Query("""
             SELECT new gomes.luis.divisaodecontas.extrato.usuario.ValorPorUsuario(pp, CAST(sum(d.valor) * (pp.percentual / 100) as big_decimal))
@@ -62,5 +62,5 @@ public interface ExtratoPorUsuarioRepository extends JpaRepository<ValorPorUsuar
             WHERE d.periodo.id = :periodoId
             AND d.isDivisivel = true
             GROUP BY pp.id""")
-    List<ValorPorUsuario> buscarValorDevidoDasDespesasDivisivelPorUsuarioNoPeriodo(Long periodoId);
+    List<ValorPorUsuario> buscarValoresDividosDevidosPorUsuarioNoPeriodo(Long periodoId);
 }
