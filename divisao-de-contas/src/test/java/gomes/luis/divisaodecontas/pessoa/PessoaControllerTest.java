@@ -1,8 +1,5 @@
-package gomes.luis.divisaodecontas.periodo;
+package gomes.luis.divisaodecontas.pessoa;
 
-import gomes.luis.divisaodecontas.pessoa.Pessoa;
-import gomes.luis.divisaodecontas.pessoa.PessoaController;
-import gomes.luis.divisaodecontas.pessoa.PessoaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -10,6 +7,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 import java.util.List;
 
 import static org.mockito.Mockito.when;
