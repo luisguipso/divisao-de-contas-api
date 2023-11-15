@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,13 +26,13 @@ public class SecurityConfiguration {
     @Bean
     @Order(1)
     public SecurityFilterChain apiFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
-        http.securityMatcher("/api/**");
+        http.securityMatcher(new AntPathRequestMatcher("/api/**"));
         http.headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         http.cors(cors -> cors.configure(http));
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(sm -> sm.sessionCreationPolicy(STATELESS));
         http.addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/api/**").authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated());
         return http.build();
     }
 

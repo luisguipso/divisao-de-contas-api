@@ -20,21 +20,21 @@ public interface ExtratoPorUsuarioRepository extends JpaRepository<ValorPorUsuar
 
     @Query(value = """
             WITH totalDevidoPorUsuarioNoPeriodo AS (
-                SELECT u.id, u.nome, u.percentual, SUM(d.valor) * (u.percentual / 100) AS valor
+                SELECT u.id, u.nome, u.percentual as percentual, SUM(d.valor) * (u.percentual / 100) AS valor
                 FROM despesa d
                          JOIN periodo p ON p.id = d.id_periodo
                          JOIN pagadores_dos_periodos pp ON pp.id_periodo = p.id
                          JOIN pessoa u ON u.id = pp.id_pagador
                 WHERE d.id_periodo = :periodoId
-                AND d.is_divisivel = 1
+                AND d.is_divisivel = true
                 GROUP BY u.id
                 union all
-                SELECT u.id, u.nome, 100, SUM(d.valor) AS valor
+                SELECT u.id, u.nome, 100 as percentual, SUM(d.valor) AS valor
                 FROM despesa d
                          JOIN periodo p ON p.id = d.id_periodo
                          JOIN pessoa u ON u.id = d.id_dono
                 WHERE d.id_periodo = :periodoId
-                  AND d.is_divisivel = 0
+                  AND d.is_divisivel = false
                 GROUP BY u.id
             )
             SELECT id, nome , AVG(percentual), SUM(valor)
@@ -42,4 +42,28 @@ public interface ExtratoPorUsuarioRepository extends JpaRepository<ValorPorUsuar
             GROUP BY id, nome""",
             nativeQuery = true)
     List<Tuple> buscarValorDevidoPorUsuarioNoPeriodo(Long periodoId);
+
+
+    @Query(value = """
+            SELECT u.id, u.nome, 100 as percentual, SUM(d.valor) AS valor
+                FROM despesa d
+                         JOIN periodo p ON p.id = d.id_periodo
+                         JOIN pessoa u ON u.id = d.id_dono
+                WHERE d.id_periodo = :periodoId
+                  AND d.is_divisivel = false
+                GROUP BY u.id""",
+            nativeQuery = true)
+    List<Tuple> buscarValorDevidoDasDespesasNaoDivisivelPorUsuarioNoPeriodo(Long periodoId);
+
+    @Query(value = """
+            SELECT u.id, u.nome, u.percentual as percentual, SUM(d.valor) * (u.percentual / 100) AS valor
+            FROM despesa d
+                     JOIN periodo p ON p.id = d.id_periodo
+                     JOIN pagadores_dos_periodos pp ON pp.id_periodo = p.id
+                     JOIN pessoa u ON u.id = pp.id_pagador
+            WHERE d.id_periodo = :periodoId
+            AND d.is_divisivel = true
+            GROUP BY u.id""",
+            nativeQuery = true)
+    List<Tuple> buscarValorDevidoDasDespesasDivisivelPorUsuarioNoPeriodo(Long periodoId);
 }

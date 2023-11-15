@@ -15,7 +15,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(controllers = PessoaController.class)
-public class PessoaControllerTest {
+class PessoaControllerTest {
 
     @Autowired
     MockMvc mockMVC;
@@ -24,9 +24,9 @@ public class PessoaControllerTest {
     private PessoaService pessoaService;
 
     @Test
-    public void buscarPessoaExistente_DeveRetornarOk() throws Exception {
+    void buscarPessoaExistente_DeveRetornarOk() throws Exception {
         when(pessoaService.buscarTodos())
-                .thenReturn(List.of(new Pessoa("LUIS")));
+                .thenReturn(List.of(new Pessoa("LUIS", 55)));
         mockMVC.perform(MockMvcRequestBuilders.get("/pessoa"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

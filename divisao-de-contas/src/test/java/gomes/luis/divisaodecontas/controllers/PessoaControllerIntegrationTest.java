@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -24,11 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @AutoConfigureMockMvc
 public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationTests {
-    public static final String PESSOA_PATH = "/pessoa";
+    public static final String PESSOA_PATH = "/api/v1/pessoa";
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private PessoaController pessoaController;
     @Autowired
     private PessoaRepository pessoaRepository;
     ObjectMapper mapper;
@@ -95,12 +92,11 @@ public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationT
 
     }
 
-    private Pessoa criarPessoaViaRequest(Pessoa pessoa) throws Exception {
+    private void criarPessoaViaRequest(Pessoa pessoa) throws Exception {
         String json = mapper.writeValueAsString(pessoa);
         mockMvc.perform(MockMvcRequestBuilders.post(PESSOA_PATH)
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
-        return pessoa;
     }
 }
