@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
+@Transactional
 class ExtratoPorUsuarioRepositoryTest {
     @Autowired
     private ExtratoPorUsuarioRepository extratoPorUsuarioRepository;
@@ -41,44 +42,38 @@ class ExtratoPorUsuarioRepositoryTest {
 
 
     @Test
-    @Transactional
     void dadoDuasDespesasSendoUmaDivisivelEOutraIndividual_BuscaDespesasDivisiveis() {
         setup();
         Periodo periodo = periodoRepository.findAll().stream().findFirst().orElse(null);
         assertNotNull(periodo.getId());
 
-        List<Tuple> tuples = extratoPorUsuarioRepository.buscarValorDevidoDasDespesasDivisivelPorUsuarioNoPeriodo(periodo.getId());
-        assertNotNull(tuples);
-        assertThat(tuples).hasSize(2);
+        List<ValorPorUsuario> valoresPorUsuario = extratoPorUsuarioRepository.buscarValorDevidoDasDespesasDivisivelPorUsuarioNoPeriodo(periodo.getId());
 
-        TupleToValorPorUsuario converter = new TupleToValorPorUsuario();
-        ValorPorUsuario valorPorUsuario1 = converter.convert(tuples.get(0));
+        assertNotNull(valoresPorUsuario);
+        assertThat(valoresPorUsuario).hasSize(2);
+        ValorPorUsuario valorPorUsuario1 = valoresPorUsuario.get(0);
         assertThat(valorPorUsuario1.getUsuario().getNome()).isEqualTo("Luis");
         assertThat(valorPorUsuario1.getValorTotal()).isCloseTo(BigDecimal.valueOf(83.79), Percentage.withPercentage(1));
-        ValorPorUsuario valorPorUsuario2 = converter.convert(tuples.get(1));
+        ValorPorUsuario valorPorUsuario2 = valoresPorUsuario.get(1);
         assertThat(valorPorUsuario2.getUsuario().getNome()).isEqualTo("Cyntia");
         assertThat(valorPorUsuario2.getValorTotal()).isCloseTo(BigDecimal.valueOf(68.56), Percentage.withPercentage(1));
     }
 
     @Test
-    @Transactional
     void dadoDuasDespesasSendoUmaDivisivelEOutraIndividual_BuscaDespesasNaoDivisiveis() {
         setup();
         Periodo periodo = periodoRepository.findAll().stream().findFirst().orElse(null);
         assertNotNull(periodo.getId());
 
-        List<Tuple> tuples = extratoPorUsuarioRepository.buscarValorDevidoDasDespesasNaoDivisivelPorUsuarioNoPeriodo(periodo.getId());
-        assertNotNull(tuples);
-        assertThat(tuples).hasSize(1);
+        List<ValorPorUsuario> valoresPorUsuario = extratoPorUsuarioRepository.buscarValorDevidoDasDespesasNaoDivisivelPorUsuarioNoPeriodo(periodo.getId());
 
-        TupleToValorPorUsuario converter = new TupleToValorPorUsuario();
-        ValorPorUsuario valorPorUsuario1 = converter.convert(tuples.get(0));
+        assertThat(valoresPorUsuario).hasSize(1);
+        ValorPorUsuario valorPorUsuario1 = valoresPorUsuario.stream().findFirst().orElse(null);
         assertThat(valorPorUsuario1.getUsuario().getNome()).isEqualTo("Cyntia");
         assertThat(valorPorUsuario1.getValorTotal()).isCloseTo(BigDecimal.valueOf(100), Percentage.withPercentage(1));
     }
 
-    @Test()
-    @Transactional
+    @Test
     void dadoDuasDespesasSendoUmaDivisivelEOutraIndividual_BuscaResumoParaTodosUsuarios() {
         setup();
         Periodo periodo = periodoRepository.findAll().stream().findFirst().orElse(null);
