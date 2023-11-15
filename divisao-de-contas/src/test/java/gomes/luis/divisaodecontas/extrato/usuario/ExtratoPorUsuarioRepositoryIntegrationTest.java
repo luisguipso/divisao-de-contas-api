@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
-class ExtratoPorUsuarioRepositoryTest {
+class ExtratoPorUsuarioRepositoryIntegrationTest {
     @Autowired
     private ExtratoPorUsuarioRepository extratoPorUsuarioRepository;
     @Autowired
