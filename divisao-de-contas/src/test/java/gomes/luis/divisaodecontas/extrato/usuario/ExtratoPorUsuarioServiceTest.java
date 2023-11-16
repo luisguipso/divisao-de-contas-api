@@ -71,5 +71,49 @@ class ExtratoPorUsuarioServiceTest {
         assertThat(actual.get(1).getValorTotal()).isEqualTo(valueOf(145.0));
     }
 
+    @Test
+    void dadoUsuariosComApenasDespesasDivisiveis_buscarValorDevidoPorUsuarioNoPeriodo() {
+        Pessoa luis = new Pessoa(1L, "Luis", 55);
+        Pessoa cyntia = new Pessoa(2L, "Cyntia", 45);
+
+        ArrayList<Object> valoresDivididos = new ArrayList<>(List.of(
+                new ValorPorUsuario(luis, valueOf(55.00)),
+                new ValorPorUsuario(cyntia, valueOf(45.00))));
+        doReturn(valoresDivididos)
+                .when(repository).buscarValoresDividosDevidosPorUsuarioNoPeriodo(1L);
+
+        doReturn(new ArrayList<>())
+                .when(repository).buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(1L);
+
+        List<ValorPorUsuario> actual = service.buscarValorDevidoPorUsuarioNoPeriodo(1L);
+
+        assertThat(actual).hasSize(2);
+        assertThat(actual.get(0).getUsuario().getNome()).isEqualTo("Luis");
+        assertThat(actual.get(0).getValorTotal()).isEqualTo(valueOf(55.0));
+        assertThat(actual.get(1).getUsuario().getNome()).isEqualTo("Cyntia");
+        assertThat(actual.get(1).getValorTotal()).isEqualTo(valueOf(45.0));
+    }
+
+    @Test
+    void dadoUsuariosComApenasDespesasIndividuais_buscarValorDevidoPorUsuarioNoPeriodo() {
+        Pessoa luis = new Pessoa(1L, "Luis", 55);
+        Pessoa cyntia = new Pessoa(2L, "Cyntia", 45);
+
+        doReturn(new ArrayList<>())
+                .when(repository).buscarValoresDividosDevidosPorUsuarioNoPeriodo(1L);
+        ArrayList<Object> valoresIndividuais = new ArrayList<>(List.of(
+                new ValorPorUsuario(luis, valueOf(1000.00)),
+                new ValorPorUsuario(cyntia, valueOf(45.00))));
+        doReturn(valoresIndividuais)
+                .when(repository).buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(1L);
+
+        List<ValorPorUsuario> actual = service.buscarValorDevidoPorUsuarioNoPeriodo(1L);
+
+        assertThat(actual).hasSize(2);
+        assertThat(actual.get(0).getUsuario().getNome()).isEqualTo("Luis");
+        assertThat(actual.get(0).getValorTotal()).isEqualTo(valueOf(1000.0));
+        assertThat(actual.get(1).getUsuario().getNome()).isEqualTo("Cyntia");
+        assertThat(actual.get(1).getValorTotal()).isEqualTo(valueOf(45.0));
+    }
 
 }
