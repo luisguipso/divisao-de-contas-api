@@ -1,13 +1,11 @@
 package gomes.luis.divisaodecontas.categoria;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-@Entity(name = "categoria")
+@Entity
+@Table(name = "categoria")
 public class Categoria implements Serializable {
     @Id
     @GeneratedValue()
