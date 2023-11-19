@@ -1,6 +1,7 @@
 package gomes.luis.divisaodecontas.despesa;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gomes.luis.divisaodecontas.categoria.Categoria;
 import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.pessoa.Pessoa;
@@ -27,6 +28,7 @@ public class Despesa implements Serializable {
     @JoinColumn(name = "id_pagador")
     private Pessoa pagador;
     @Column
+    @JsonProperty(value="isDivisivel")
     private boolean isDivisivel;
 
     @ManyToOne(optional = false)
@@ -114,8 +116,8 @@ public class Despesa implements Serializable {
         return isDivisivel;
     }
 
-    public void setDivisivel(boolean divisivel) {
-        isDivisivel = divisivel;
+    public void setDivisivel(boolean isDivisivel) {
+        isDivisivel = isDivisivel;
     }
 
     public Categoria getCategoria() {
