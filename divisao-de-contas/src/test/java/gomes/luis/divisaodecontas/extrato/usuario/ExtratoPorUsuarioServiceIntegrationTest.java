@@ -1,5 +1,6 @@
 package gomes.luis.divisaodecontas.extrato.usuario;
 
+import gomes.luis.divisaodecontas.extrato.EnvironmentSetup;
 import gomes.luis.divisaodecontas.periodo.Periodo;
 import gomes.luis.divisaodecontas.periodo.PeriodoRepository;
 import org.junit.jupiter.api.Test;
