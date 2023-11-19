@@ -16,12 +16,14 @@ public class ExtratoPorUsuarioService {
     }
 
     public List<ValorPorUsuario> buscarValorPagoPorUsuarioNoPeriodo(Long periodoId) {
-        return repository.buscarValorPagoPorUsuarioNoPeriodo(periodoId);
+        return repository.buscarValoresPagosPorUsuarioNoPeriodo(periodoId);
     }
 
     public List<ValorPorUsuario> buscarValorDevidoPorUsuarioNoPeriodo(Long periodoId) {
         List<ValorPorUsuario> valoresDividos = repository.buscarValoresDividosDevidosPorUsuarioNoPeriodo(periodoId);
         List<ValorPorUsuario> valoresIndividuais = repository.buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(periodoId);
+        List<ValorPorUsuario> valoresIndicados = repository.buscarValoresIndividuaisDevidosIndicadosPorOutroUsuarioNoPeriodo(periodoId);
+        valoresIndividuais.addAll(valoresIndicados);
         valoresDividos.addAll(valoresIndividuais);
         Map<Pessoa, ValorPorUsuario> valoresDevidos = new TreeMap<>();
         valoresDividos.forEach(valor -> agruparValoresPorUsuario(valoresDevidos, valor)

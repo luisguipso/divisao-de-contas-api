@@ -15,7 +15,17 @@ public interface ExtratoPorUsuarioRepository extends JpaRepository<ValorPorUsuar
              WHERE d.periodo.id = :periodoId
              GROUP BY d.dono.id
             """)
-    List<ValorPorUsuario> buscarValorPagoPorUsuarioNoPeriodo(Long periodoId);
+    List<ValorPorUsuario> buscarValoresPagosPorUsuarioNoPeriodo(Long periodoId);
+
+    @Query("""
+            SELECT new gomes.luis.divisaodecontas.extrato.usuario.ValorPorUsuario(d.pagador, sum(d.valor))
+            FROM Despesa d
+            join Pessoa p on p.id = d.pagador.id
+            where d.periodo.id = :periodoId
+            and d.dono.id <> d.pagador.id
+            group by p.id
+            """)
+    List<ValorPorUsuario> buscarValoresIndividuaisDevidosIndicadosPorOutroUsuarioNoPeriodo(Long periodoId);
 
     @Query("""
             SELECT new gomes.luis.divisaodecontas.extrato.usuario.ValorPorUsuario(d.dono , sum(d.valor))
@@ -24,6 +34,7 @@ public interface ExtratoPorUsuarioRepository extends JpaRepository<ValorPorUsuar
                          JOIN Pessoa u ON u.id = d.dono.id
                 WHERE d.periodo.id = :periodoId
                   AND d.isDivisivel = false
+                  and d.pagador = null
                 GROUP BY u.id
                 ORDER BY u.id""")
     List<ValorPorUsuario> buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(Long periodoId);

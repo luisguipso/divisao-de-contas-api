@@ -1,59 +1,106 @@
 package gomes.luis.divisaodecontas.extrato.usuario;
 
 import gomes.luis.divisaodecontas.categoria.Categoria;
-import gomes.luis.divisaodecontas.categoria.CategoriaRepository;
+import gomes.luis.divisaodecontas.categoria.CategoriaService;
 import gomes.luis.divisaodecontas.despesa.Despesa;
-import gomes.luis.divisaodecontas.despesa.DespesaRepository;
+import gomes.luis.divisaodecontas.despesa.DespesaService;
 import gomes.luis.divisaodecontas.periodo.Periodo;
-import gomes.luis.divisaodecontas.periodo.PeriodoRepository;
+import gomes.luis.divisaodecontas.periodo.PeriodoService;
 import gomes.luis.divisaodecontas.pessoa.Pessoa;
-import gomes.luis.divisaodecontas.pessoa.PessoaRepository;
+import gomes.luis.divisaodecontas.pessoa.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static org.mockito.Mockito.mock;
 
 @Component
 public class EnvironmentSetup {
 
     @Autowired
-    private PessoaRepository pessoaRepository;
+    private PessoaService pessoaService;
     @Autowired
-    private PeriodoRepository periodoRepository;
+    private PeriodoService periodoService;
     @Autowired
-    private CategoriaRepository categoriaRepository;
+    private CategoriaService categoriaService;
     @Autowired
-    private DespesaRepository despesaRepository;
+    private DespesaService despesaService;
 
-    void setup(){
-        Pessoa luis = new Pessoa("Luis", 55);
-        Pessoa cyntia = new Pessoa("Cyntia", 45);
-        pessoaRepository.saveAll(List.of(luis, cyntia));
-        Periodo jan24 = new Periodo("jan-24");
-        jan24.adicionarPagadores(List.of(luis, cyntia));
-        periodoRepository.save(jan24);
-        Categoria mercado = new Categoria("Mercado");
-        categoriaRepository.save(mercado);
-        Despesa cancao21jan = new Despesa("cancao",
-                cyntia,
-                true,
-                mercado,
-                new Date(2024, Calendar.JANUARY, 21),
-                jan24,
-                BigDecimal.valueOf(152.35),
-                false);
-        despesaRepository.save(cancao21jan);
-        Despesa maquiagem = new Despesa("maquiagem",
-                cyntia,
-                false,
-                mercado,
-                new Date(2024, Calendar.JANUARY, 22),
-                jan24,
-                BigDecimal.valueOf(100.10),
-                false);
-        despesaRepository.save(maquiagem);
+
+    public void setupDuasPessoasDuasDespesasIndividuaisEDuasDivididasEDuasDespesasIndicadas() {
+
+        Pessoa luis = criarPessoa("Luis", 55);
+        Pessoa cyntia = criarPessoa("Cyntia", 45);
+        Periodo jan24 = criarPeriodo("jan-24", luis, cyntia);
+        Categoria mercado = criarCategoria("Mercado");
+        Categoria casa = criarCategoria("Casa");
+        criarDespesaDivisivel("cancao", mercado, cyntia, jan24, 152.35); //luis: 83.79, cyntia: 68,5575
+        criarDespesaIndividual("maquiagem", mercado, cyntia, jan24, 100.10); //cyntia 100.10
+        criarDespesaIndicada("energia", casa, cyntia, jan24, 200.35, luis); //luis: 200.35
+        criarDespesaIndicada("internet", casa, cyntia, jan24, 125.83, luis); //luis: 125.83
+    }
+
+    public void setupDuasPessoasDuasDespesasIndividuaisEDuasDivididasEUmaDespesaIndicada() {
+
+        Pessoa luis = criarPessoa("Luis", 55);
+        Pessoa cyntia = criarPessoa("Cyntia", 45);
+        Periodo jan24 = criarPeriodo("jan-24", luis, cyntia);
+        Categoria mercado = criarCategoria("Mercado");
+        Categoria casa = criarCategoria("Casa");
+        criarDespesaDivisivel("cancao", mercado, cyntia, jan24, 152.35); //luis: 83.79, cyntia: 68,5575
+        criarDespesaIndividual("maquiagem", mercado, cyntia, jan24, 100.10); //cyntia 100.10
+        criarDespesaIndicada("cancao", casa, cyntia, jan24, 200.35, luis); //luis: 200.35
+    }
+
+
+    public void setupDuasPessoasDuasDespesasIndividuaisEDuasDivididas() {
+        Pessoa luis = criarPessoa("Luis", 55);
+        Pessoa cyntia = criarPessoa("Cyntia", 45);
+        Periodo jan24 = criarPeriodo("jan-24", luis, cyntia);
+        Categoria mercado = criarCategoria("Mercado");
+        criarDespesaDivisivel("cancao", mercado, cyntia, jan24, 152.35);
+        criarDespesaIndividual("maquiagem", mercado, cyntia, jan24, 100.10);
+    }
+
+    private Despesa criarDespesaDivisivel(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor) {
+        return criarDespesa(descricao, categoria, dono, periodo, valor, true, null);
+    }
+
+    private Despesa criarDespesaIndividual(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor) {
+        return criarDespesa(descricao, categoria, dono, periodo, valor, false, null);
+    }
+
+    private Despesa criarDespesaIndicada(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor, Pessoa pagador) {
+        return criarDespesa(descricao, categoria, dono, periodo, valor, false, pagador);
+    }
+    private Despesa criarDespesa(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor, boolean isDivisivel, Pessoa pagador) {
+        return despesaService.salvar(new Despesa(descricao,
+                dono,
+                isDivisivel,
+                categoria,
+                mock(Date.class),
+                periodo,
+                BigDecimal.valueOf(valor)
+        , pagador));
+    }
+
+    private Pessoa criarPessoa(String nome, int percentual) {
+        return pessoaService.salvar(new Pessoa(nome, percentual));
+    }
+
+    private Categoria criarCategoria(String nome) {
+        Categoria c = new Categoria(nome);
+        categoriaService.salvar(c);
+        return c;
+    }
+
+    private Periodo criarPeriodo(String descricao, Pessoa... pessoas) {
+        Periodo p = new Periodo(descricao);
+        p.adicionarPagadores(List.of(pessoas));
+        periodoService.salvar(p);
+        return p;
     }
 }

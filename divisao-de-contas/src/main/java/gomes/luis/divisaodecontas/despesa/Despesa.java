@@ -22,6 +22,10 @@ public class Despesa implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_dono")
     private Pessoa dono;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "id_pagador")
+    private Pessoa pagador;
     @Column
     private boolean isDivisivel;
 
@@ -48,8 +52,7 @@ public class Despesa implements Serializable {
             Categoria categoria,
             Date data,
             Periodo periodo,
-            BigDecimal valor,
-            boolean isPago
+            BigDecimal valor
     ) {
         this();
         this.descricao = descricao;
@@ -59,7 +62,20 @@ public class Despesa implements Serializable {
         this.data = data;
         this.periodo = periodo;
         this.valor = valor;
-        this.isPago = isPago;
+    }
+
+    public Despesa(
+            String descricao,
+            Pessoa dono,
+            boolean isDivisivel,
+            Categoria categoria,
+            Date data,
+            Periodo periodo,
+            BigDecimal valor,
+            Pessoa pagador
+    ) {
+        this(descricao, dono, isDivisivel, categoria, data, periodo, valor);
+        this.pagador = pagador;
     }
 
     public Long getId() {
@@ -84,6 +100,14 @@ public class Despesa implements Serializable {
 
     public void setDono(Pessoa dono) {
         this.dono = dono;
+    }
+
+    public Pessoa getPagador() {
+        return pagador;
+    }
+
+    public void setPagador(Pessoa pagador) {
+        this.pagador = pagador;
     }
 
     public boolean isDivisivel() {

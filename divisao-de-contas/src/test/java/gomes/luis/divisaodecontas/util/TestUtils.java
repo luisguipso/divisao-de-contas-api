@@ -18,7 +18,6 @@ public class TestUtils {
                 mock(Categoria.class),
                 mock(Date.class),
                 mock(Periodo.class),
-                valor,
-                false);
+                valor);
     }
 }
