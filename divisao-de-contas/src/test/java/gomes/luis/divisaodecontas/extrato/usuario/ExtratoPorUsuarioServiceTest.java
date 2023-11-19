@@ -28,9 +28,9 @@ class ExtratoPorUsuarioServiceTest {
         Pessoa luis = new Pessoa(1L, "Luis", 55);
         Pessoa cyntia = new Pessoa(2L, "Cyntia", 45);
 
-        ArrayList<Object> valoresDivididos = new ArrayList<>(List.of(
+        ArrayList<Object> valoresDivididos = listOf(
                 new ValorPorUsuario(luis, valueOf(55.00)),
-                new ValorPorUsuario(cyntia, valueOf(45.00))));
+                new ValorPorUsuario(cyntia, valueOf(45.00)));
         doReturn(valoresDivididos)
                 .when(repository).buscarValoresDividosDevidosPorUsuarioNoPeriodo(1L);
         List<ValorPorUsuario> valoresIndividuais = listOf(
@@ -80,13 +80,13 @@ class ExtratoPorUsuarioServiceTest {
         Pessoa luis = new Pessoa(1L, "Luis", 55);
         Pessoa cyntia = new Pessoa(2L, "Cyntia", 45);
 
-        ArrayList<Object> valoresDivididos = new ArrayList<>(List.of(
+        ArrayList<Object> valoresDivididos = listOf(
                 new ValorPorUsuario(luis, valueOf(55.00)),
-                new ValorPorUsuario(cyntia, valueOf(45.00))));
+                new ValorPorUsuario(cyntia, valueOf(45.00)));
         doReturn(valoresDivididos)
                 .when(repository).buscarValoresDividosDevidosPorUsuarioNoPeriodo(1L);
 
-        doReturn(new ArrayList<>())
+        doReturn(emptyList())
                 .when(repository).buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(1L);
 
         List<ValorPorUsuario> actual = service.buscarValorDevidoPorUsuarioNoPeriodo(1L);
@@ -98,16 +98,20 @@ class ExtratoPorUsuarioServiceTest {
         assertThat(actual.get(1).getValorTotal()).isEqualTo(valueOf(45.0));
     }
 
+    private static ArrayList<Object> emptyList() {
+        return new ArrayList<>();
+    }
+
     @Test
     void dadoUsuariosComApenasDespesasIndividuais_buscarValorDevidoPorUsuarioNoPeriodo() {
         Pessoa luis = new Pessoa(1L, "Luis", 55);
         Pessoa cyntia = new Pessoa(2L, "Cyntia", 45);
 
-        doReturn(new ArrayList<>())
+        doReturn(emptyList())
                 .when(repository).buscarValoresDividosDevidosPorUsuarioNoPeriodo(1L);
-        ArrayList<Object> valoresIndividuais = new ArrayList<>(List.of(
+        ArrayList<Object> valoresIndividuais = listOf(
                 new ValorPorUsuario(luis, valueOf(1000.00)),
-                new ValorPorUsuario(cyntia, valueOf(45.00))));
+                new ValorPorUsuario(cyntia, valueOf(45.00)));
         doReturn(valoresIndividuais)
                 .when(repository).buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(1L);
 
