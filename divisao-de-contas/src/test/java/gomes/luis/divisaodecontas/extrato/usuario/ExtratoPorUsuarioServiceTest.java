@@ -33,7 +33,7 @@ class ExtratoPorUsuarioServiceTest {
                 new ValorPorUsuario(cyntia, valueOf(45.00))));
         doReturn(valoresDivididos)
                 .when(repository).buscarValoresDividosDevidosPorUsuarioNoPeriodo(1L);
-        List<ValorPorUsuario> valoresIndividuais = List.of(
+        List<ValorPorUsuario> valoresIndividuais = listOf(
                 new ValorPorUsuario(luis, valueOf(300)),
                 new ValorPorUsuario(cyntia, valueOf(100)));
         doReturn(valoresIndividuais)
@@ -53,12 +53,12 @@ class ExtratoPorUsuarioServiceTest {
         Pessoa luis = new Pessoa(1L, "Luis", 55);
         Pessoa cyntia = new Pessoa(2L, "Cyntia", 45);
 
-        ArrayList<Object> valoresDivididos = new ArrayList<>(List.of(
+        ArrayList<Object> valoresDivididos = listOf(
                 new ValorPorUsuario(luis, valueOf(55.00)),
-                new ValorPorUsuario(cyntia, valueOf(45.00))));
+                new ValorPorUsuario(cyntia, valueOf(45.00)));
         doReturn(valoresDivididos)
                 .when(repository).buscarValoresDividosDevidosPorUsuarioNoPeriodo(1L);
-        List<ValorPorUsuario> valoresIndividuais = List.of(new ValorPorUsuario(cyntia, valueOf(100)));
+        List<ValorPorUsuario> valoresIndividuais = listOf(new ValorPorUsuario(cyntia, valueOf(100)));
         doReturn(valoresIndividuais)
                 .when(repository).buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(1L);
 
@@ -69,6 +69,10 @@ class ExtratoPorUsuarioServiceTest {
         assertThat(actual.get(0).getValorTotal()).isEqualTo(valueOf(55.0));
         assertThat(actual.get(1).getUsuario().getNome()).isEqualTo("Cyntia");
         assertThat(actual.get(1).getValorTotal()).isEqualTo(valueOf(145.0));
+    }
+
+    private ArrayList listOf(ValorPorUsuario... valorPorUsuarios) {
+        return new ArrayList<>(List.of(valorPorUsuarios));
     }
 
     @Test
