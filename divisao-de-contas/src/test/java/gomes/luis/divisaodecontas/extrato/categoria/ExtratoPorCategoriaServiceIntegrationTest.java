@@ -50,6 +50,30 @@ class ExtratoPorCategoriaServiceIntegrationTest {
         findPeriodo();
     }
 
+    @Test
+    void dadoQuatroDespesasSendoUmaDivisivelUmaIndividualDuasIndicadas_BuscaResumoParaTodosUsuarios() {
+        setupDuasPessoasDuasDespesasIndividuaisEDuasDivididasEDuasDespesasIndicadas();
+        Periodo periodo = findPeriodo();
+        Pessoa luis = findPessoa("Luis");
+
+        List<ValorPorCategoria> valoresPorUsuario = extratoPorCategoriaService
+                .buscarValorTotalPorCategoriaEUsuarioNoPeriodo(periodo.getId(), luis.getId());
+        assertNotNull(valoresPorUsuario);
+        assertThat(valoresPorUsuario).hasSize(2);
+
+        ValorPorCategoria valorPorCategoria1 = valoresPorUsuario.get(0);
+        assertThat(valorPorCategoria1.getCategoria().getNome()).isEqualTo("Mercado");
+        assertThat(valorPorCategoria1.getValorTotal()).isCloseTo(valueOf(83.79), withPercentage(1));
+        ValorPorCategoria valorPorCategoria2 = valoresPorUsuario.get(1);
+        assertThat(valorPorCategoria2.getCategoria().getNome()).isEqualTo("Casa");
+        assertThat(valorPorCategoria2.getValorTotal()).isCloseTo(valueOf(326.18), withPercentage(1));
+    }
+
+    private void setupDuasPessoasDuasDespesasIndividuaisEDuasDivididasEDuasDespesasIndicadas() {
+        environment.setupDuasPessoasDuasDespesasIndividuaisEDuasDivididasEDuasDespesasIndicadas();
+        findPeriodo();
+    }
+
     private Periodo findPeriodo() {
         return periodoRepository.findAll().stream().findFirst().orElseThrow();
     }

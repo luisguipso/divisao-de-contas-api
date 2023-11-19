@@ -1,7 +1,5 @@
 package gomes.luis.divisaodecontas.extrato.categoria;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.Tuple;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,22 +7,20 @@ import java.util.List;
 @Service
 public class ExtratoPorCategoriaService {
     
-    private final ExtratoPorCategoriaRepository extratoPorCategoriaRepository;
-    private final TupleToValorPorCategoria converter;
+    private final ExtratoPorCategoriaRepository repository;
+
     public ExtratoPorCategoriaService(ExtratoPorCategoriaRepository extratoPorCategoriaRepository){
-        this.extratoPorCategoriaRepository = extratoPorCategoriaRepository;
-        this.converter = new TupleToValorPorCategoria();
+        this.repository = extratoPorCategoriaRepository;
     }
 
     public List<ValorPorCategoria> buscarValorTotalPorCategoriaEUsuarioNoPeriodo(Long periodoId, Long usuarioId){
+        List<ValorPorCategoria> despesasDivisiveis = repository.buscarValorDevidoDeDespesasDivisiveisPorCategoriaEUsuarioNoPeriodo(periodoId, usuarioId);
+        List<ValorPorCategoria> despesasIndividuais = repository.buscarValorDevidoDeDespesasIndividuaisPorCategoriaEUsuarioNoPeriodo(periodoId, usuarioId);
+        List<ValorPorCategoria> despesasIndicadas = repository.buscarValorDevidoDeDespesasIndicadasPorCategoriaEUsuarioNoPeriodo(periodoId, usuarioId);
 
-        List<Tuple> resultTuple = extratoPorCategoriaRepository.buscarValorTotalPorCategoriaEUsuarioNoPeriodo(periodoId, usuarioId);
-        if (resultTuple.isEmpty())
-            throw new EntityNotFoundException("Não existem dados para os parametros utilizados.");
-        return resultTuple
-                .stream()
-                .map(converter::convert)
-                .toList();
+        despesasDivisiveis.addAll(despesasIndividuais);
+        despesasDivisiveis.addAll(despesasIndicadas);
+        return despesasDivisiveis;
     }
 
 
