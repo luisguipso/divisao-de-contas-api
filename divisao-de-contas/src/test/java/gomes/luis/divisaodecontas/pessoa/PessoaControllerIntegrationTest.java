@@ -1,12 +1,11 @@
 package gomes.luis.divisaodecontas.pessoa;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gomes.luis.divisaodecontas.DivisaoDeContasApplicationTests;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -16,10 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
-@AutoConfigureMockMvc
-public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationTests {
+@SpringBootTest
+public class PessoaControllerIntegrationTest {
     public static final String PESSOA_PATH = "/api/v1/pessoa";
     @Autowired
     private MockMvc mockMvc;
@@ -37,7 +37,6 @@ public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationT
     public void criarPessoaHappyDay_RetornaIsCreated() throws Exception {
         Pessoa pessoa = new Pessoa("Luis", 0);
 
-
         String json = mapper.writeValueAsString(pessoa);
         mockMvc.perform(MockMvcRequestBuilders.post(PESSOA_PATH)
                         .content(json)
@@ -54,9 +53,9 @@ public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationT
         criarPessoaViaRequest(new Pessoa("Cyntia", 0));
 
         mockMvc.perform(MockMvcRequestBuilders.get(PESSOA_PATH))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome").value("Luis"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].nome").value("Cyntia"));
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].nome").value("Luis"))
+                .andExpect(jsonPath("$[1].nome").value("Cyntia"));
     }
 
     @Test
@@ -66,9 +65,9 @@ public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationT
         criarPessoaViaRequest(new Pessoa("Cyntia", 0));
 
         mockMvc.perform(MockMvcRequestBuilders.get(PESSOA_PATH))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome").value("Luis"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].nome").value("Cyntia"));
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].nome").value("Luis"))
+                .andExpect(jsonPath("$[1].nome").value("Cyntia"));
 
         Optional<Pessoa> pessoa = pessoaRepository.findByNome("Luis");
         Pessoa alterada = pessoa.orElseThrow();
@@ -80,12 +79,12 @@ public class PessoaControllerIntegrationTest extends DivisaoDeContasApplicationT
                         .content(jsonAlterada)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("Joao"));
+                .andExpect(jsonPath("$.nome").value("Joao"));
 
         mockMvc.perform(MockMvcRequestBuilders.get(PESSOA_PATH))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome").value("Joao"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].nome").value("Cyntia"));
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].nome").value("Joao"))
+                .andExpect(jsonPath("$[1].nome").value("Cyntia"));
 
     }
 
