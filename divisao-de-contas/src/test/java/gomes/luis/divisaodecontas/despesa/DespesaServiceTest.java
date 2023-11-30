@@ -21,13 +21,11 @@ class DespesaServiceTest {
 
     DespesaService despesaService;
     private DespesaRepository despesaRepositoryMocked;
-    private PeriodoService periodoServiceMocked;
 
     @BeforeEach
     void setup(){
         despesaRepositoryMocked = mock(DespesaRepository.class);
-        periodoServiceMocked = mock(PeriodoService.class);
-        despesaService = new DespesaService(despesaRepositoryMocked, periodoServiceMocked);
+        despesaService = new DespesaService(despesaRepositoryMocked, mock(PeriodoService.class));
     }
 
     @Test
@@ -35,6 +33,8 @@ class DespesaServiceTest {
         Despesa despesa = criarDespesa(BigDecimal.valueOf(50));
         doReturn(Optional.of(despesa))
                 .when(despesaRepositoryMocked).findById(despesa.getId());
+        doReturn(despesa)
+                .when(despesaRepositoryMocked).save(despesa);
         despesaService.pagarDespesa(despesa);
         assertTrue(despesa.isPago(),"Despesa está paga");
     }
@@ -44,12 +44,14 @@ class DespesaServiceTest {
         List<Despesa> despesas = List.of(criarDespesa(BigDecimal.valueOf(50)),
                 criarDespesa(BigDecimal.valueOf(60)),
                 criarDespesa(BigDecimal.valueOf(70)));
+        assertFalse(despesas.stream().anyMatch(Despesa::isPago));
         doReturn(Optional.of(mock(Despesa.class)))
                 .when(despesaRepositoryMocked).findById(null);
-        assertFalse(despesas.stream().allMatch(d -> d.isPago()));
+        despesas.forEach(each -> doReturn(each)
+                .when(despesaRepositoryMocked).save(each));
 
         List<Despesa> despesasPagas = despesaService.pagarDespesas(despesas);
 
-        assertTrue(despesasPagas.stream().allMatch(d -> d.isPago()));
+        assertTrue(despesasPagas.stream().allMatch(Despesa::isPago));
     }
 }
