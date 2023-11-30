@@ -31,7 +31,6 @@ public class EnvironmentSetup {
 
 
     public void setupDuasPessoasDuasDespesasIndividuaisEDuasDivididasEDuasDespesasIndicadas() {
-
         Pessoa luis = criarPessoa("Luis", 55);
         Pessoa cyntia = criarPessoa("Cyntia", 45);
         Periodo jan24 = criarPeriodo("jan-24", luis, cyntia);
@@ -65,19 +64,19 @@ public class EnvironmentSetup {
         criarDespesaIndividual("maquiagem", mercado, cyntia, jan24, 100.10);
     }
 
-    private Despesa criarDespesaDivisivel(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor) {
-        return criarDespesa(descricao, categoria, dono, periodo, valor, true, null);
+    private void criarDespesaDivisivel(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor) {
+        criarDespesa(descricao, categoria, dono, periodo, valor, true, null);
     }
 
-    private Despesa criarDespesaIndividual(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor) {
-        return criarDespesa(descricao, categoria, dono, periodo, valor, false, null);
+    private void criarDespesaIndividual(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor) {
+        criarDespesa(descricao, categoria, dono, periodo, valor, false, null);
     }
 
-    private Despesa criarDespesaIndicada(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor, Pessoa pagador) {
-        return criarDespesa(descricao, categoria, dono, periodo, valor, false, pagador);
+    private void criarDespesaIndicada(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor, Pessoa pagador) {
+        criarDespesa(descricao, categoria, dono, periodo, valor, false, pagador);
     }
-    private Despesa criarDespesa(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor, boolean isDivisivel, Pessoa pagador) {
-        return despesaService.salvar(new Despesa(descricao,
+    private void criarDespesa(String descricao, Categoria categoria, Pessoa dono, Periodo periodo, double valor, boolean isDivisivel, Pessoa pagador) {
+        despesaService.salvar(new Despesa(descricao,
                 dono,
                 isDivisivel,
                 categoria,
