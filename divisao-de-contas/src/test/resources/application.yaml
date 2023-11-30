@@ -13,7 +13,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/divisaodecontas_test?useSSL=false
+    url: jdbc:mysql://localhost:3306/divisaodecontas_test?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: OuPfme45oAM6m6S8lqy4PQfxlYFlCnmPzyaloZ5Zw=
 
