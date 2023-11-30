@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static java.math.BigDecimal.valueOf;
@@ -34,12 +35,8 @@ class ExtratoPorUsuarioRepositoryIntegrationTest {
 
         assertNotNull(valoresPorUsuario);
         assertThat(valoresPorUsuario).hasSize(2);
-        ValorPorUsuario valorPorUsuario1 = valoresPorUsuario.get(0);
-        assertThat(valorPorUsuario1.getUsuario().getNome()).isEqualTo("Luis");
-        assertThat(valorPorUsuario1.getValorTotal()).isCloseTo(valueOf(83.79), withPercentage(1));
-        ValorPorUsuario valorPorUsuario2 = valoresPorUsuario.get(1);
-        assertThat(valorPorUsuario2.getUsuario().getNome()).isEqualTo("Cyntia");
-        assertThat(valorPorUsuario2.getValorTotal()).isCloseTo(valueOf(68.56), withPercentage(1));
+        assertValorPorUsuario(valoresPorUsuario.get(0), "Luis", valueOf(83.79));
+        assertValorPorUsuario(valoresPorUsuario.get(1), "Cyntia", valueOf(68.56));
     }
 
     @Test
@@ -49,9 +46,7 @@ class ExtratoPorUsuarioRepositoryIntegrationTest {
         List<ValorPorUsuario> valoresPorUsuario = extratoPorUsuarioRepository.buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(periodo.getId());
 
         assertThat(valoresPorUsuario).hasSize(1);
-        ValorPorUsuario valorPorUsuario1 = valoresPorUsuario.stream().findFirst().orElse(null);
-        assertThat(valorPorUsuario1.getUsuario().getNome()).isEqualTo("Cyntia");
-        assertThat(valorPorUsuario1.getValorTotal()).isCloseTo(valueOf(100), withPercentage(1));
+        assertValorPorUsuario(valoresPorUsuario.get(0), "Cyntia", valueOf(100));
     }
 
     @Test
@@ -62,9 +57,12 @@ class ExtratoPorUsuarioRepositoryIntegrationTest {
                 .buscarValoresIndividuaisDevidosPorUsuarioNoPeriodo(periodo.getId());
 
         assertThat(valoresPorUsuario).hasSize(1);
-        ValorPorUsuario valorPorUsuario1 = valoresPorUsuario.stream().findFirst().orElse(null);
-        assertThat(valorPorUsuario1.getUsuario().getNome()).isEqualTo("Cyntia");
-        assertThat(valorPorUsuario1.getValorTotal()).isCloseTo(valueOf(100), withPercentage(1));
+        assertValorPorUsuario(valoresPorUsuario.get(0), "Cyntia", valueOf(100));
+    }
+
+    private static void assertValorPorUsuario(ValorPorUsuario valorPorUsuario1, String Cyntia, BigDecimal expected) {
+        assertThat(valorPorUsuario1.getUsuario().getNome()).isEqualTo(Cyntia);
+        assertThat(valorPorUsuario1.getValorTotal()).isCloseTo(expected, withPercentage(1));
     }
 
     @Test
@@ -85,7 +83,6 @@ class ExtratoPorUsuarioRepositoryIntegrationTest {
                 .buscarValoresIndividuaisDevidosIndicadosPorOutroUsuarioNoPeriodo(periodo.getId());
 
         assertThat(valoresPorUsuario).hasSize(1);
-
     }
 
     @Test
@@ -95,9 +92,8 @@ class ExtratoPorUsuarioRepositoryIntegrationTest {
         List<ValorPorUsuario> valoresPorUsuario = extratoPorUsuarioRepository
                 .buscarValoresIndividuaisDevidosIndicadosPorOutroUsuarioNoPeriodo(periodo.getId());
 
-        ValorPorUsuario valorPorUsuario = valoresPorUsuario.get(0);
-        assertThat(valorPorUsuario.getUsuario().getNome()).isEqualTo("Luis");
-        assertThat(valorPorUsuario.getValorTotal()).isCloseTo(valueOf(200.35), withPercentage(1));
+        assertThat(valoresPorUsuario).hasSize(1);
+        assertValorPorUsuario(valoresPorUsuario.get(0), "Luis", valueOf(200.35));
     }
 
     @Test
@@ -107,9 +103,8 @@ class ExtratoPorUsuarioRepositoryIntegrationTest {
         List<ValorPorUsuario> valoresPorUsuario = extratoPorUsuarioRepository
                 .buscarValoresIndividuaisDevidosIndicadosPorOutroUsuarioNoPeriodo(periodo.getId());
 
-        ValorPorUsuario valorPorUsuario = valoresPorUsuario.get(0);
-        assertThat(valorPorUsuario.getUsuario().getNome()).isEqualTo("Luis");
-        assertThat(valorPorUsuario.getValorTotal()).isCloseTo(valueOf(326.18), withPercentage(1));
+        assertThat(valoresPorUsuario).hasSize(1);
+        assertValorPorUsuario(valoresPorUsuario.get(0), "Luis", valueOf(326.18));
     }
 
     void setupDuasPessoasDuasDespesasIndividuaisEDuasDivididasEDuasDespesasIndicadas(){
@@ -128,7 +123,7 @@ class ExtratoPorUsuarioRepositoryIntegrationTest {
     }
 
     private void setPeriodoParaTeste() {
-        periodo = periodoRepository.findAll().stream().findFirst().orElse(null);
+        periodo = periodoRepository.findAll().stream().findFirst().orElseThrow();
         assertNotNull(periodo.getId());
     }
 }

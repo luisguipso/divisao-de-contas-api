@@ -37,12 +37,10 @@ class ExtratoPorCategoriaServiceIntegrationTest {
 
         List<ValorPorCategoria> valoresPorCategoria = extratoPorCategoriaService
                 .buscarValorTotalPorCategoriaEUsuarioNoPeriodo(periodo.getId(), luis.getId());
+
         assertNotNull(valoresPorCategoria);
         assertThat(valoresPorCategoria).hasSize(1);
-
-        ValorPorCategoria valorPorUsuario1 = valoresPorCategoria.get(0);
-        assertThat(valorPorUsuario1.getCategoria().getNome()).isEqualTo("Mercado");
-        assertThat(valorPorUsuario1.getValorTotal()).isCloseTo(valueOf(83.79), withPercentage(1));
+        assertValorPorCategoria(valoresPorCategoria.get(0), "Mercado", 83.79);
     }
 
     private void setupDuasPessoasDuasDespesasIndividuaisEDuasDivididas() {
@@ -56,17 +54,18 @@ class ExtratoPorCategoriaServiceIntegrationTest {
         Periodo periodo = findPeriodo();
         Pessoa luis = findPessoa("Luis");
 
-        List<ValorPorCategoria> valoresPorUsuario = extratoPorCategoriaService
+        List<ValorPorCategoria> valoresPorCategoria = extratoPorCategoriaService
                 .buscarValorTotalPorCategoriaEUsuarioNoPeriodo(periodo.getId(), luis.getId());
-        assertNotNull(valoresPorUsuario);
-        assertThat(valoresPorUsuario).hasSize(2);
 
-        ValorPorCategoria valorPorCategoria1 = valoresPorUsuario.get(0);
-        assertThat(valorPorCategoria1.getCategoria().getNome()).isEqualTo("Mercado");
-        assertThat(valorPorCategoria1.getValorTotal()).isCloseTo(valueOf(83.79), withPercentage(1));
-        ValorPorCategoria valorPorCategoria2 = valoresPorUsuario.get(1);
-        assertThat(valorPorCategoria2.getCategoria().getNome()).isEqualTo("Casa");
-        assertThat(valorPorCategoria2.getValorTotal()).isCloseTo(valueOf(326.18), withPercentage(1));
+        assertNotNull(valoresPorCategoria);
+        assertThat(valoresPorCategoria).hasSize(2);
+        assertValorPorCategoria(valoresPorCategoria.get(0), "Mercado", 83.79);
+        assertValorPorCategoria(valoresPorCategoria.get(1), "Casa", 326.18);
+    }
+
+    private static void assertValorPorCategoria(ValorPorCategoria valorPorCategoria1, String Mercado, double val) {
+        assertThat(valorPorCategoria1.getCategoria().getNome()).isEqualTo(Mercado);
+        assertThat(valorPorCategoria1.getValorTotal()).isCloseTo(valueOf(val), withPercentage(1));
     }
 
     private void setupDuasPessoasDuasDespesasIndividuaisEDuasDivididasEDuasDespesasIndicadas() {
