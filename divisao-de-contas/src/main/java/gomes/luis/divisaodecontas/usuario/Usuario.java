@@ -2,9 +2,7 @@ package gomes.luis.divisaodecontas.usuario;
 
 import gomes.luis.divisaodecontas.pessoa.Pessoa;
 import jakarta.persistence.*;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -63,9 +61,11 @@ public class Usuario {
         this.pessoa = pessoa;
     }
 
-    public List<SimpleGrantedAuthority> getAuthorities() {
-        return Arrays.stream(this.authorities.split(","))
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+    public void setAuthorities(String authorities){
+        this.authorities = authorities;
+    }
+    public List<String> getAuthorities() {
+        String[] auth = this.authorities.split(",");
+        return List.of(auth);
     }
 }
