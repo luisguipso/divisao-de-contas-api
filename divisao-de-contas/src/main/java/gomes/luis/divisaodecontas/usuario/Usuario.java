@@ -2,6 +2,10 @@ package gomes.luis.divisaodecontas.usuario;
 
 import gomes.luis.divisaodecontas.pessoa.Pessoa;
 import jakarta.persistence.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
@@ -17,6 +21,7 @@ public class Usuario {
     @OneToOne
     @JoinColumn(name = "id_pessoa")
     private Pessoa pessoa;
+    private String authorities;
 
     public Usuario(String username, String password) {
         this.username = username;
@@ -56,5 +61,11 @@ public class Usuario {
 
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
+    }
+
+    public List<SimpleGrantedAuthority> getAuthorities() {
+        return Arrays.stream(this.authorities.split(","))
+                .map(SimpleGrantedAuthority::new)
+                .toList();
     }
 }
