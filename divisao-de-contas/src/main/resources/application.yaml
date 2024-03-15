@@ -28,7 +28,7 @@ spring:
 
 security:
   keystore:
-    resource: file:./src/main/resources/security/auth.jks
+    resource: "classpath:security/auth.jks"
     type: JKS
     password: changeit
     key:

@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile
+    hostname: divisao-de-contas-api
+    environment:
+      - DATABASE_URL=jdbc:mysql://localhost:3306/divisaodecontas?allowPublicKeyRetrieval=true&useSSL=false
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=OuPfme45oAM6m6S8lqy4PQfxlYFlCnmPzyaloZ5Zw=
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+    network_mode: host
+
+  db-mysql:
+    image: mysql:8.2
+    environment:
+      - MYSQL_DB=divisaodecontas
+      - MYSQL_ROOT_PASSWORD=OuPfme45oAM6m6S8lqy4PQfxlYFlCnmPzyaloZ5Zw=
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    network_mode: host
